@@ -1,4 +1,2 @@
 # dbproject
-Adrian Nędza
-Igor Dzierwa
-Konrad Makuch
+Authors: Adrian Nędza, Igor Dzierwa, Konrad Makuch
