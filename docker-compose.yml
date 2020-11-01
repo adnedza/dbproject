@@ -3,13 +3,13 @@ services:
   mongo:
     image: mongo:latest
     container_name: 'mongo'
-    restart: always
+    #restart: always        ##used when you want to start docker automatically on startup of system
     ports:
       - 27017:27017
   northwindproject:
     build: ./
     image: 'spring:v1'
     container_name: 'northwindproject'
-    restart: always
+    #restart: always
     ports:
       - 8080:8080
