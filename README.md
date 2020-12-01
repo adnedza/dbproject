@@ -11,17 +11,17 @@ mvn clean package -DskipTests (spotify maven plugin)
 localhost:8080/swagger-ui/index.html
 
 # Opis bazy danych:
-Categories – kategorie oferowanych produktów.
-Products – informacja o oferowanych produktach.
-Suppliers – informacja o dostawcach.
-Shippers – informacja o spedytorach.
-Customers – informacja o klientach.
-Employees – informacja o pracownikach.
-Orders – zamówienia składane przez klientów.
-OrderDetails – szczegóły zamówień.
-Territories – terytoria/obszary/miasta.
-Region – Regiony.
-EmployeeTerritories – informacja o terytoriach/obszarach/miastach (obslugiwanych przez poszczególnych pracowników).
-CustomerDemographics – grupy klientów.
-CustomerCustomerDemo – przyporządkowanie klientów do grup.
+Categories – kategorie oferowanych produktów.\
+Products – informacja o oferowanych produktach.\
+Suppliers – informacja o dostawcach.\
+Shippers – informacja o spedytorach.\
+Customers – informacja o klientach.\
+Employees – informacja o pracownikach.\
+Orders – zamówienia składane przez klientów.\
+OrderDetails – szczegóły zamówień.\
+Territories – terytoria/obszary/miasta.\
+Region – Regiony.\
+EmployeeTerritories – informacja o terytoriach/obszarach/miastach (obslugiwanych przez poszczególnych pracowników).\
+CustomerDemographics – grupy klientów.\
+CustomerCustomerDemo – przyporządkowanie klientów do grup.\
 
