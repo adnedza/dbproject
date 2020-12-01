@@ -23,5 +23,5 @@ Territories – terytoria/obszary/miasta.\
 Region – Regiony.\
 EmployeeTerritories – informacja o terytoriach/obszarach/miastach (obslugiwanych przez poszczególnych pracowników).\
 CustomerDemographics – grupy klientów.\
-CustomerCustomerDemo – przyporządkowanie klientów do grup.\
+CustomerCustomerDemo – przyporządkowanie klientów do grup.
 
