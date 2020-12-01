@@ -1,8 +1,48 @@
-{ "_id" : 1, "CategoryID" : 1, "CategoryName" : "Beverages", "Description" : "Soft drinks, coffees, teas, beers, and ales", "Picture" : null }
-{ "_id" : 2, "CategoryID" : 2, "CategoryName" : "Condiments", "Description" : "Sweet and savory sauces, relishes, spreads, and seasonings", "Picture" : "" }
-{ "_id" : 3, "CategoryID" : 3, "CategoryName" : "Confections", "Description" : "Desserts, candies, and sweet breads", "Picture" : "" }
-{ "_id" : 4, "CategoryID" : 4, "CategoryName" : "Dairy Products", "Description" : "Cheeses", "Picture" : "" }
-{ "_id" : 5, "CategoryID" : 5, "CategoryName" : "Grains/Cereals", "Description" : "Breads, crackers, pasta, and cereal", "Picture" : "" }
-{ "_id" : 6, "CategoryID" : 6, "CategoryName" : "Meat/Poultry", "Description" : "Prepared meats", "Picture" : "" }
-{ "_id" : 7, "CategoryID" : 7, "CategoryName" : "Produce", "Description" : "Dried fruit and bean curd", "Picture" : "" }
-{ "_id" : 8, "CategoryID" : 8, "CategoryName" : "Seafood", "Description" : "Seaweed and fish", "Picture" : "" }
+{ 
+    "_id" : NumberInt(1), 
+    "CategoryName" : "Beverages", 
+    "Description" : "Soft drinks, coffees, teas, beers, and ales", 
+    "Picture" : null
+}
+{ 
+    "_id" : NumberInt(2), 
+    "CategoryName" : "Condiments", 
+    "Description" : "Sweet and savory sauces, relishes, spreads, and seasonings", 
+    "Picture" : ""
+}
+{ 
+    "_id" : NumberInt(3), 
+    "CategoryName" : "Confections", 
+    "Description" : "Desserts, candies, and sweet breads", 
+    "Picture" : ""
+}
+{ 
+    "_id" : NumberInt(4), 
+    "CategoryName" : "Dairy Products", 
+    "Description" : "Cheeses", 
+    "Picture" : ""
+}
+{ 
+    "_id" : NumberInt(5), 
+    "CategoryName" : "Grains/Cereals", 
+    "Description" : "Breads, crackers, pasta, and cereal", 
+    "Picture" : ""
+}
+{ 
+    "_id" : NumberInt(6), 
+    "CategoryName" : "Meat/Poultry", 
+    "Description" : "Prepared meats", 
+    "Picture" : ""
+}
+{ 
+    "_id" : NumberInt(7), 
+    "CategoryName" : "Produce", 
+    "Description" : "Dried fruit and bean curd", 
+    "Picture" : ""
+}
+{ 
+    "_id" : NumberInt(8), 
+    "CategoryName" : "Seafood", 
+    "Description" : "Seaweed and fish", 
+    "Picture" : ""
+}
