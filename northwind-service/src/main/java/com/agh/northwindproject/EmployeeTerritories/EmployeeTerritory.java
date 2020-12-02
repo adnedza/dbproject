@@ -1,19 +1,18 @@
 package com.agh.northwindproject.EmployeeTerritories;
 
+import com.agh.northwindproject.Employees.Employee;
+import com.agh.northwindproject.Territories.Territory;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 
 @Document(collection = "employeeTerritories")
 public class EmployeeTerritory {
     @Id
-    private CompositeKey id;
+    private BigInteger id;
 
+    private Employee employee;
 
-    static class CompositeKey implements Serializable {
-        private BigInteger employeeID;
-        private BigInteger territoryID;
-    }
+    private Territory territory;
 }

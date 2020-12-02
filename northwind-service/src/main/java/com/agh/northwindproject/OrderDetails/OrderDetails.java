@@ -1,22 +1,20 @@
 package com.agh.northwindproject.OrderDetails;
 
-import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritory;
+import com.agh.northwindproject.Orders.Order;
+import com.agh.northwindproject.Products.Product;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.io.Serializable;
 import java.math.BigInteger;
 
 @Document(collection = "orderDetails")
-public class OrderDetail {
+public class OrderDetails {
     @Id
-    private CompositeKey id;
+    private BigInteger id;
 
+    private Order order;
 
-    static class CompositeKey implements Serializable {
-        private BigInteger orderID;
-        private BigInteger productID;
-    }
+    private Product product;
 
     private int unitPrice;
 

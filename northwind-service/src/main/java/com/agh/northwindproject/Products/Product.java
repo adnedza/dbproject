@@ -1,5 +1,6 @@
 package com.agh.northwindproject.Products;
 
+import com.agh.northwindproject.Categories.Category;
 import com.agh.northwindproject.Suppliers.Supplier;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -11,9 +12,9 @@ public class Product {
     @Id
     private BigInteger productID;
 
-    private BigInteger supplierID;
+    private Supplier supplier;
 
-    private BigInteger categoryID;
+    private Category category;
 
     private double unitPrice;
 

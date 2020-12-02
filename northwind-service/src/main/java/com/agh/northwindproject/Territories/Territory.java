@@ -1,5 +1,6 @@
 package com.agh.northwindproject.Territories;
 
+import com.agh.northwindproject.Region.Region;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -12,5 +13,5 @@ public class Territory {
 
     private String territoryDescription;
 
-    private BigInteger regionID;
+    private Region region;
 }
