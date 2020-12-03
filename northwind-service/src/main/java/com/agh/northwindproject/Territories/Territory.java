@@ -9,7 +9,7 @@ import java.math.BigInteger;
 @Document(collection = "territories")
 public class Territory {
     @Id
-    private BigInteger territoryID;
+    private String id;
 
     private String territoryDescription;
 

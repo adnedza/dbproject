@@ -12,7 +12,7 @@ import java.util.Date;
 @Document(collection = "orders")
 public class Order {
     @Id
-    private BigInteger id;
+    private String id;
 
     private Customer customer;
 

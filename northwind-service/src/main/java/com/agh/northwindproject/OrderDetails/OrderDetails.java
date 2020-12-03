@@ -10,7 +10,7 @@ import java.math.BigInteger;
 @Document(collection = "orderDetails")
 public class OrderDetails {
     @Id
-    private BigInteger id;
+    private String id;
 
     private Order order;
 

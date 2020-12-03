@@ -9,7 +9,7 @@ import java.util.Date;
 @Document(collection = "employees")
 public class Employee {
     @Id
-    private BigInteger employeeID;
+    private String id;
 
     private String lastName;
 

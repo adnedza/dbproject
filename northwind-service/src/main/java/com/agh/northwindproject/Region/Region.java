@@ -8,7 +8,7 @@ import java.math.BigInteger;
 @Document(value = "regions")
 public class Region {
     @Id
-    private BigInteger regionID;
+    private String id;
 
     private String regionDescription;
 }

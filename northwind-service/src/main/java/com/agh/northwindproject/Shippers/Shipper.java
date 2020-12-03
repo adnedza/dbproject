@@ -8,7 +8,7 @@ import java.math.BigInteger;
 @Document(collection = "shippers")
 public class Shipper {
     @Id
-    private BigInteger shipperID;
+    private String id;
 
     private String companyName;
 

@@ -10,7 +10,7 @@ import java.math.BigInteger;
 @Document(collection = "employeeTerritories")
 public class EmployeeTerritory {
     @Id
-    private BigInteger id;
+    private String id;
 
     private Employee employee;
 
