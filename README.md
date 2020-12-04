@@ -130,6 +130,8 @@ Dokumet NoSQL:
   "regionDescription": "string"
 }
 ``` 
+Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
+
 
 ### Territories:
 
@@ -216,6 +218,8 @@ Dokument NoSQL:
   "titleOfCourtesy": "string"
 }
 ``` 
+Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
+
 
 ### CustomerDemographics:
 
@@ -229,6 +233,8 @@ Dokument NoSQL:
   "id": "string"
 }
 ``` 
+Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
+
 
 ### CustomerCustomerDemo:
 
@@ -276,3 +282,5 @@ Dokument NoSQL:
   "region": "string"
 }
 ``` 
+Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
+
