@@ -1,8 +1,9 @@
 package com.agh.northwindproject.CustomerDemographics;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
+import java.util.List;
 
-import java.math.BigInteger;
-
-public interface CustomerDemographicsRepository extends MongoRepository<CustomerDemographic, BigInteger> {
+public interface CustomerDemographicsRepository extends MongoRepository<CustomerDemographic, String> {
+    List<CustomerDemographic> findAll();
+    CustomerDemographic findByCustomerDesc(String customerDesc);
 }

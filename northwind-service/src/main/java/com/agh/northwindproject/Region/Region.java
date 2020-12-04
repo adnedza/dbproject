@@ -1,14 +1,21 @@
 package com.agh.northwindproject.Region;
 
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigInteger;
-
 @Document(value = "regions")
+@NoArgsConstructor
+@Getter @Setter
 public class Region {
     @Id
     private String id;
 
     private String regionDescription;
+
+    public Region(String regionDescription) {
+        this.regionDescription = regionDescription;
+    }
 }
