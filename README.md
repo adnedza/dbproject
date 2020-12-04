@@ -126,7 +126,8 @@ Tabela SQL:\
 Dokumet NoSQL:
 ```
 {
-  
+  "id": "string",
+  "regionDescription": "string"
 }
 ``` 
 
@@ -138,7 +139,12 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-  
+  "id": "string",
+  "region": {
+    "id": "string",
+    "regionDescription": "string"
+  },
+  "territoryDescription": "string"
 }
 ``` 
 
@@ -150,8 +156,36 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-  
-}
+    "id": "string",
+    "employee": {
+      "id": "string",
+      "lastName": "string",
+      "firstName": "string",
+      "title": "string",
+      "titleOfCourtesy": "string",
+      "birthDate": "2020-12-04T08:35:03.328Z",
+      "hireDate": "2020-12-04T08:35:03.328Z",
+      "address": "string",
+      "city": "string",
+      "region": "string",
+      "postalCode": "string",
+      "country": "string",
+      "homePhone": "string",
+      "extension": "string",
+      "photo": "string",
+      "notes": "string",
+      "reportsTo": "string",
+      "photoPath": "string"
+    },
+    "territory": {
+      "id": "string",
+      "territoryDescription": "string",
+      "region": {
+        "id": "string",
+        "regionDescription": "string"
+      }
+    }
+  }
 ``` 
 
 ### Employee:
@@ -162,7 +196,24 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-  
+  "address": "string",
+  "birthDate": "2020-12-04T08:35:03.328Z",
+  "city": "string",
+  "country": "string",
+  "extension": "string",
+  "firstName": "string",
+  "hireDate": "2020-12-04T08:35:03.328Z",
+  "homePhone": "string",
+  "id": "string",
+  "lastName": "string",
+  "notes": "string",
+  "photo": "string",
+  "photoPath": "string",
+  "postalCode": "string",
+  "region": "string",
+  "reportsTo": "string",
+  "title": "string",
+  "titleOfCourtesy": "string"
 }
 ``` 
 
@@ -174,7 +225,8 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-  
+  "customerDesc": "string",
+  "id": "string"
 }
 ``` 
 
@@ -186,8 +238,23 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-  
-}
+    "id": "string",
+    "customer": {
+      "id": "string",
+      "companyName": "string",
+      "contactTitle": "string",
+      "address": "string",
+      "postalCode": "string",
+      "country": "string",
+      "phone": "string",
+      "fax": "string",
+      "region": "string"
+    },
+    "customerDemographic": {
+      "id": "string",
+      "customerDesc": "string"
+    }
+  }
 ``` 
 
 ### Customers:
@@ -198,6 +265,14 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-  
+  "address": "string",
+  "companyName": "string",
+  "contactTitle": "string",
+  "country": "string",
+  "fax": "string",
+  "id": "string",
+  "phone": "string",
+  "postalCode": "string",
+  "region": "string"
 }
 ``` 
