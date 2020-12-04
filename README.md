@@ -10,7 +10,7 @@ mvn clean package -DskipTests (spotify maven plugin)
 # Swagger3: 
 localhost:8080/swagger-ui/index.html
 
-# Project Lombok
+# Project Lombok:
 Biblioteka Javy, która w znaczącym stopniu ułatwia definiowanie klas, szczególnie klas modelu, które powinny być zgodne ze standardem JavaBeans lub być klasami dla obiektów niemodyfikowalnych (immutable).\
 Rezultat: Znaczące skrócenie kodu poprzez zastąpienie wszystkich getter'ów i setter'ów adnotacjami @Getter oraz @Setter.
 
@@ -118,6 +118,86 @@ Dokument NoSQL:
 ``` 
 Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
 
+### Region:
 
+Tabela SQL:\
+![Screenshot](images/region_table.png)
 
+Dokumet NoSQL:
+```
+{
+  
+}
+``` 
 
+### Territories:
+
+Tabela SQL:\
+![Screenshot](images/territories_table.png)
+
+Dokument NoSQL:
+```
+{
+  
+}
+``` 
+
+### EmployeeTerritories:
+
+Tabela SQL:\
+![Screenshot](images/employeeTerritories_table.png)
+
+Dokument NoSQL:
+```
+{
+  
+}
+``` 
+
+### Employee:
+
+Tabela SQL:\
+![Screenshot](images/employees_table.png)
+
+Dokument NoSQL:
+```
+{
+  
+}
+``` 
+
+### CustomerDemographics:
+
+Tabela SQL:\
+![Screenshot](images/customerDemographics_table.png)
+
+Dokument NoSQL:
+```
+{
+  
+}
+``` 
+
+### CustomerCustomerDemo:
+
+Tabela SQL:\
+![Screenshot](images/customerCustomerDemo_table.png)
+
+Dokument NoSQL:
+```
+{
+  
+}
+``` 
+
+### Customers:
+
+Tabela SQL:\
+![Screenshot](images/customers_table.png)
+
+Dokument NoSQL:
+```
+{
+  
+}
+``` 
