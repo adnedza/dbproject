@@ -169,7 +169,7 @@ Dokument NoSQL:
 ### CustomerDemographics:
 
 Tabela SQL:\
-![Screenshot](images/customerDemographics_table.png)
+![Screenshot](images/CustomerDemographics_table.png)
 
 Dokument NoSQL:
 ```
