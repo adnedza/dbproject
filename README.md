@@ -38,7 +38,7 @@ CustomerCustomerDemo – przyporządkowanie klientów do grup.
 ### Categories:
 
 Tabela SQL:\
-![Screenshot](images/category_table.JPG) 
+![Screenshot](images/category_table.png) 
 
 Dokument NoSQL:
 ```
@@ -54,7 +54,7 @@ Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
 ### Products:
 
 Tabela SQL:\
-![Screenshot](images/products_table.JPG) 
+![Screenshot](images/products_table.png) 
 
 Dokument NoSQL:
 
@@ -97,7 +97,7 @@ Jeśli chodzi o kwestię dodawania produktów, a raczej dodawania obiektu Suppli
 ### Suppliers:
 
 Tabela SQL:\
-![Screenshot](images/suppliers_table.JPG)
+![Screenshot](images/suppliers_table.png)
 
 Dokument NoSQL:
 ```
@@ -297,4 +297,175 @@ Dokument NoSQL:
 }
 ``` 
 Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
+
+### Shippers:
+
+Tabela SQL:\
+![Screenshot](images/shippers_table.png)
+
+Dokument NoSQL:
+```
+{
+  "companyName": "string",
+  "id": "string",
+  "phone": "string"
+}
+```
+Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
+
+### Orders:
+
+Tabela SQL:\
+![Screenshot](images/orders_table.png)
+
+Dokument NoSQL:
+```
+{
+  "customer": {
+    "address": "string",
+    "companyName": "string",
+    "contactTitle": "string",
+    "country": "string",
+    "fax": "string",
+    "id": "string",
+    "phone": "string",
+    "postalCode": "string",
+    "region": "string"
+  },
+  "employee": {
+    "address": "string",
+    "birthDate": "2020-12-04T20:05:25.715Z",
+    "city": "string",
+    "country": "string",
+    "extension": "string",
+    "firstName": "string",
+    "hireDate": "2020-12-04T20:05:25.715Z",
+    "homePhone": "string",
+    "id": "string",
+    "lastName": "string",
+    "notes": "string",
+    "photo": "string",
+    "photoPath": "string",
+    "postalCode": "string",
+    "region": "string",
+    "reportsTo": "string",
+    "title": "string",
+    "titleOfCourtesy": "string"
+  },
+  "freight": "string",
+  "id": "string",
+  "orderDate": "2020-12-04T20:05:25.715Z",
+  "requiredDate": "2020-12-04T20:05:25.715Z",
+  "shipCity": "string",
+  "shipCountry": "string",
+  "shipName": "string",
+  "shipPostalCode": "string",
+  "shipRegion": "string",
+  "shipVia": {
+    "companyName": "string",
+    "id": "string",
+    "phone": "string"
+  },
+  "shippedDate": "2020-12-04T20:05:25.715Z"
+}
+```
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Customer, Employee oraz Shipper, w całości są przekazywane do dokumentu Order.
+
+Jeśli chodzi o kwestię dodawania obiektów Customer, Employee oraz Shipper to preferowaną przez nas opcją jest przekazanie samych parametrów: companyName(Customer)/firstName+lastName(Employee)/companyName(Shipper), po których możemy wyszukać te obiekty.
+
+### OrderDetails:
+
+Tabela SQL:\
+![Screenshot](images/orderDetails_table.png)
+
+Dokument NoSQL:
+```
+{
+  "discount": 0,
+  "id": "string",
+  "order": {
+    "customer": {
+      "address": "string",
+      "companyName": "string",
+      "contactTitle": "string",
+      "country": "string",
+      "fax": "string",
+      "id": "string",
+      "phone": "string",
+      "postalCode": "string",
+      "region": "string"
+    },
+    "employee": {
+      "address": "string",
+      "birthDate": "2020-12-04T20:05:50.737Z",
+      "city": "string",
+      "country": "string",
+      "extension": "string",
+      "firstName": "string",
+      "hireDate": "2020-12-04T20:05:50.737Z",
+      "homePhone": "string",
+      "id": "string",
+      "lastName": "string",
+      "notes": "string",
+      "photo": "string",
+      "photoPath": "string",
+      "postalCode": "string",
+      "region": "string",
+      "reportsTo": "string",
+      "title": "string",
+      "titleOfCourtesy": "string"
+    },
+    "freight": "string",
+    "id": "string",
+    "orderDate": "2020-12-04T20:05:50.737Z",
+    "requiredDate": "2020-12-04T20:05:50.737Z",
+    "shipCity": "string",
+    "shipCountry": "string",
+    "shipName": "string",
+    "shipPostalCode": "string",
+    "shipRegion": "string",
+    "shipVia": {
+      "companyName": "string",
+      "id": "string",
+      "phone": "string"
+    },
+    "shippedDate": "2020-12-04T20:05:50.737Z"
+  },
+  "product": {
+    "category": {
+      "categoryName": "string",
+      "description": "string",
+      "id": "string",
+      "picture": "string"
+    },
+    "discontinued": true,
+    "id": "string",
+    "productName": "string",
+    "quantityPerUnit": 0,
+    "reorderLevel": 0,
+    "supplier": {
+      "address": "string",
+      "city": "string",
+      "companyName": "string",
+      "contactName": "string",
+      "contactTitle": "string",
+      "country": "string",
+      "fax": "string",
+      "homePage": "string",
+      "id": "string",
+      "phone": "string",
+      "postalCode": "string",
+      "region": "string"
+    },
+    "unitPrice": 0,
+    "unitsInOrder": 0,
+    "unitsInStock": 0
+  },
+  "quantity": 0,
+  "unitPrice": 0
+}
+```
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Order oraz Product w całości są przekazywane do dokumentu OrderDetails.
+
+Jeśli chodzi o kwestię dodawania obiektów Order oraz Product to obiekt Product wyszukujemy za pomocą parametru productName, natomiast obiekt Order wyszukujemy za pomocą takich samych parametrów jak w tabeli Order (opis powyżej).
 
