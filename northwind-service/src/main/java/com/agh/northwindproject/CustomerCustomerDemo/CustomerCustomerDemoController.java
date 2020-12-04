@@ -2,8 +2,6 @@ package com.agh.northwindproject.CustomerCustomerDemo;
 
 import com.agh.northwindproject.CustomerDemographics.CustomerDemographicsRepository;
 import com.agh.northwindproject.Customers.CustomersRepository;
-import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritory;
-import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritoryRequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

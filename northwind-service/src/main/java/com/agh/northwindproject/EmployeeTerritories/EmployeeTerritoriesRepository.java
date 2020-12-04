@@ -1,12 +1,9 @@
 package com.agh.northwindproject.EmployeeTerritories;
 
 import com.agh.northwindproject.Employees.Employee;
-import com.agh.northwindproject.Products.Product;
-import com.agh.northwindproject.Region.Region;
 import com.agh.northwindproject.Territories.Territory;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public interface EmployeeTerritoriesRepository extends MongoRepository<EmployeeTerritory, String> {

@@ -1,6 +1,5 @@
 package com.agh.northwindproject.Territories;
 
-import com.agh.northwindproject.Products.Product;
 import com.agh.northwindproject.Region.RegionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

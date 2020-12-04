@@ -6,8 +6,6 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigInteger;
-
 //categories - kategorie oferowanych produktów
 
 @Document(collection = "categories")
