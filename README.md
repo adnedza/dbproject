@@ -149,6 +149,10 @@ Dokument NoSQL:
   "territoryDescription": "string"
 }
 ``` 
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Region, w całości są przekazywane do dokumentu Territories.
+
+Jeśli chodzi o kwestię dodawania obiektu Region, to preferowaną przez nas opcją jest przekazanie samego parametru: regionDescription, po których możemy odszukać dany region.
+
 
 ### EmployeeTerritories:
 
@@ -189,6 +193,12 @@ Dokument NoSQL:
     }
   }
 ``` 
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Territory jak i z obiektu Employee, w całości są przekazywane do dokumentu EmployeeTerritories.
+
+Jeśli chodzi o kwestię dodawania obiektu Employee i Territory, to preferowaną przez nas opcją jest przekazanie samych parametrów:
+firstName,lastName/territoryDescription, po których możemy odszukać danego pracownika/terytorium.
+
+
 
 ### Employee:
 
@@ -262,6 +272,10 @@ Dokument NoSQL:
     }
   }
 ``` 
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Customer jak i z obiektu CustomerDemographic, w całości są przekazywane do dokumentu CustomerCustomerDemo.
+
+Jeśli chodzi o kwestię dodawania obiektu Customer i CustomerDemographic to preferowaną przez nas opcją jest przekazanie samych parametrów: companyName/customerDesc, po których możemy odszukać danego klienta/grupę klientów.
+
 
 ### Customers:
 
