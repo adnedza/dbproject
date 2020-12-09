@@ -27,13 +27,13 @@ public class CustomerCustomerDemoController {
         return ResponseEntity.ok(customerCustomerDemoRepository.findAll());
     }
 
-    @PostMapping(value = "/api/customerCustomerDemo/{customerID}/{customerDemographicsID}")
+    @PostMapping(value = "/api/customerCustomerDemo/{customerID}/{customerDesc}")
     @ResponseBody
     public ResponseEntity<String> addNewCustomerCustomerDemo(@PathVariable String customerID,
-                                                             @PathVariable String customerDemographicsID){
+                                                             @PathVariable String customerDesc){
         Customer customer = customersRepository.findById(customerID).get();
         if(customer != null) {
-            CustomerDemographic customerDemographic = customerDemographicsRepository.findById(customerDemographicsID).get();
+            CustomerDemographic customerDemographic = customerDemographicsRepository.findByCustomerDesc(customerDesc);
             if (customerDemographic != null) {
                 CustomerCustomerDemo customerCustomerDemo = new CustomerCustomerDemo(customerDemographic);
                 customer.getCustomerCustomerDemo().add(customerCustomerDemo);
@@ -52,12 +52,11 @@ public class CustomerCustomerDemoController {
         return ResponseEntity.ok(customersRepository.findById(customerID).get().getCustomerCustomerDemo());
     }
 
-    @DeleteMapping(value = "/api/customerCustomerDemo/{companyName}/{customerCustomerDemoID}")
+    @DeleteMapping(value = "/api/customerCustomerDemo/{customerID}/{customerCustomerDemoID}")
     @ResponseBody
-    public ResponseEntity<String> deleteCustomerCustomerDemo(@PathVariable String companyName,
+    public ResponseEntity<String> deleteCustomerCustomerDemo(@PathVariable String customerID,
                                                              @PathVariable String customerCustomerDemoID) {
-        Customer customer = customersRepository.findByCompanyName(companyName);
-
+        Customer customer = customersRepository.findById(customerID).get();
         if (customer != null) {
             CustomerCustomerDemo customerCustomerDemo = customerCustomerDemoRepository
                     .findById(customerCustomerDemoID).get();
