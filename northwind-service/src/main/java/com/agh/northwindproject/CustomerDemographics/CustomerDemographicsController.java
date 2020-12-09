@@ -3,8 +3,6 @@ package com.agh.northwindproject.CustomerDemographics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-
 import java.util.List;
 
 @RestController
@@ -20,8 +18,8 @@ public class CustomerDemographicsController {
 
     @PostMapping(value = "/api/customerDemographic")
     @ResponseBody
-    public ResponseEntity<String> addNewCustomerDemographic(@RequestBody CustomerDemographic customerDemographic){
-        customerDemographicsRepository.save(customerDemographic);
+    public ResponseEntity<String> addNewCustomerDemographic(@RequestBody CustomerDemographicsRequestBody customerDemographicsRequestBody){
+        customerDemographicsRepository.save(new CustomerDemographic(customerDemographicsRequestBody));
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
@@ -31,14 +29,14 @@ public class CustomerDemographicsController {
         return ResponseEntity.ok(customerDemographicsRepository.findByCustomerDesc(customerDesc));
     }
 
-    @DeleteMapping(value = "/api/customerDemographic/{customerDesc}")
+    @DeleteMapping(value = "/api/customerDemographic/{customerDemographicID}")
     @ResponseBody
-    public ResponseEntity<String> deleteCustomerDemographic(@PathVariable String customerDesc){
-        CustomerDemographic customerDemographic = customerDemographicsRepository.findByCustomerDesc(customerDesc);
+    public ResponseEntity<String> deleteCustomerDemographic(@PathVariable String customerDemographicID){
+        CustomerDemographic customerDemographic = customerDemographicsRepository.findById(customerDemographicID).get();
         if(customerDemographic != null){
             customerDemographicsRepository.delete(customerDemographic);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }
-        return ResponseEntity.ok("\"status\": \"category not existing\"");
+        return ResponseEntity.ok("\"status\": \"customerDemographic not existing\"");
     }
 }

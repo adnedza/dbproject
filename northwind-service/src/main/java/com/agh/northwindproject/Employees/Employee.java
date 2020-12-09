@@ -1,13 +1,16 @@
 package com.agh.northwindproject.Employees;
 
+import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritory;
+import com.agh.northwindproject.Region.Region;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
-
-import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Document(collection = "employees")
 @NoArgsConstructor
@@ -50,28 +53,26 @@ public class Employee {
 
     private String photoPath;
 
-    public Employee(String lastName, String firstName,
-                    String title, String titleOfCourtesy,
-                    Date birthDate, Date hireDate, String address,
-                    String city, String region, String postalCode,
-                    String country, String homePhone, String extension,
-                    String photo, String notes, String reportsTo, String photoPath) {
-        this.lastName = lastName;
-        this.firstName = firstName;
-        this.title = title;
-        this.titleOfCourtesy = titleOfCourtesy;
-        this.birthDate = birthDate;
-        this.hireDate = hireDate;
-        this.address = address;
-        this.city = city;
-        this.region = region;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.homePhone = homePhone;
-        this.extension = extension;
-        this.photo = photo;
-        this.notes = notes;
-        this.reportsTo = reportsTo;
-        this.photoPath = photoPath;
+    @DBRef
+    private List<EmployeeTerritory> employeeTerritories = new ArrayList<>();
+
+    public Employee(EmployeeRequestBody employeeRequestBody) {
+        this.lastName = employeeRequestBody.getLastName();
+        this.firstName = employeeRequestBody.getFirstName();
+        this.title = employeeRequestBody.getTitle();
+        this.titleOfCourtesy = employeeRequestBody.getTitleOfCourtesy();
+        this.birthDate = employeeRequestBody.getBirthDate();
+        this.hireDate = employeeRequestBody.getHireDate();
+        this.address = employeeRequestBody.getAddress();
+        this.city = employeeRequestBody.getCity();
+        this.region = employeeRequestBody.getRegionDescription();
+        this.postalCode = employeeRequestBody.getPostalCode();
+        this.country = employeeRequestBody.getCountry();
+        this.homePhone = employeeRequestBody.getHomePhone();
+        this.extension = employeeRequestBody.getExtension();
+        this.photo = employeeRequestBody.getPhoto();
+        this.notes = employeeRequestBody.getNotes();
+        this.reportsTo = employeeRequestBody.getReportsTo();
+        this.photoPath = employeeRequestBody.getPhotoPath();
     }
 }

@@ -1,10 +1,14 @@
 package com.agh.northwindproject.Customers;
 
+import com.agh.northwindproject.CustomerCustomerDemo.CustomerCustomerDemo;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Document(collection = "customers")
 @NoArgsConstructor
@@ -19,7 +23,7 @@ public class Customer {
 
     private String address;
 
-    private String Region;
+    private String region;
 
     private String postalCode;
 
@@ -29,15 +33,16 @@ public class Customer {
 
     private String fax;
 
-    public Customer(String companyName, String contactTitle, String address, String region,
-                    String postalCode, String country, String phone, String fax) {
-        this.companyName = companyName;
-        this.contactTitle = contactTitle;
-        this.address = address;
-        Region = region;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.phone = phone;
-        this.fax = fax;
+    private List<CustomerCustomerDemo> customerCustomerDemo = new ArrayList<>();
+
+    public Customer(CustomerRequestBody customerRequestBody) {
+        this.companyName = customerRequestBody.getCompanyName();
+        this.contactTitle = customerRequestBody.getContactTitle();
+        this.address = customerRequestBody.getAddress();
+        this.region = customerRequestBody.getRegion();
+        this.postalCode = customerRequestBody.getPostalCode();
+        this.country = customerRequestBody.getCountry();
+        this.phone = customerRequestBody.getPhone();
+        this.fax = customerRequestBody.getFax();
     }
 }

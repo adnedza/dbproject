@@ -1,12 +1,9 @@
 package com.agh.northwindproject.OrderDetails;
 
-import com.agh.northwindproject.Customers.CustomersRepository;
-import com.agh.northwindproject.Employees.EmployeesRepository;
+
 import com.agh.northwindproject.Orders.Order;
 import com.agh.northwindproject.Orders.OrdersRepository;
-import com.agh.northwindproject.Products.Product;
 import com.agh.northwindproject.Products.ProductsRespository;
-import com.agh.northwindproject.Shippers.ShippersRepository;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,51 +24,41 @@ public class OrderDetailsController {
     @Autowired
     private OrdersRepository ordersRepository;
 
-    @Autowired
-    private CustomersRepository customersRepository;
 
-    @Autowired
-    private ShippersRepository shippersRepository;
-
-    @Autowired
-    private EmployeesRepository employeesRepository;
-
-
-    @GetMapping(value = "/api/orderdetails")
+    @GetMapping(value = "/api/orderDetails")
     @ResponseBody
     public ResponseEntity<List<OrderDetails>> getAllOrderDetails(){
         return ResponseEntity.ok(orderDetailsRepository.findAll());
     }
 
-    @PostMapping(value = "/api/orderdetail")
+    @PostMapping(value = "/api/orderDetail/{orderID}")
     @ResponseBody
-    public ResponseEntity<String> addNewOrderDetails(@RequestBody OrderDetails orderDetails){
-        orderDetails.setProduct(productsRespository.findByProductName(orderDetails.getProduct().getProductName()));
-        orderDetails.setOrder(ordersRepository.findByCustomerAndEmployeeAndShipVia(customersRepository.findByCompanyName(orderDetails.getOrder().getCustomer().getCompanyName()),
-                employeesRepository.findByLastNameAndFirstName(orderDetails.getOrder().getEmployee().getLastName(), orderDetails.getOrder().getEmployee().getFirstName()),
-                shippersRepository.findByCompanyName(orderDetails.getOrder().getShipVia().getCompanyName())));
+    public ResponseEntity<String> addNewOrderDetailsToOrder(@RequestBody OrderDetailsRequestBody orderDetailsRequestBody,
+                                                            @PathVariable String orderID){
+        OrderDetails orderDetails = new OrderDetails(orderDetailsRequestBody);
+        orderDetails.setProductID(productsRespository.findByProductName(orderDetailsRequestBody.getProductName()).getId());
         orderDetailsRepository.save(orderDetails);
+        Order order = ordersRepository.findById(orderID).get();
+        order.getOrderDetails().add(orderDetails);
+        ordersRepository.save(order);
+
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
-    @GetMapping(value = "/api/orderdetails/productName={productName}&shipperCompanyName={shipperCompanyName}&employeeLastName={employeeLastName}&employeeFirstName={employeeFirstName}&customerCompanyName={customerCompanyName}")
+    @GetMapping(value = "/api/orderDetails/{orderID}")
     @ResponseBody
-    public ResponseEntity<OrderDetails> getOrderDetailsByOrderAndProduct(@PathVariable String shipperCompanyName, @PathVariable String productName, @PathVariable String employeeLastName, @PathVariable String employeeFirstName, @PathVariable String customerCompanyName){
-        Order order = ordersRepository.findByCustomerAndEmployeeAndShipVia(customersRepository.findByCompanyName(customerCompanyName),
-                employeesRepository.findByLastNameAndFirstName(employeeLastName, employeeFirstName), shippersRepository.findByCompanyName(shipperCompanyName));
-        Product product = productsRespository.findByProductName(productName);
-        return ResponseEntity.ok(orderDetailsRepository.findByOrderAndProduct(order, product));
+    public ResponseEntity<List<OrderDetails>> getOrderDetailsByOrderID (@PathVariable String orderID){
+        return ResponseEntity.ok(ordersRepository.findById(orderID).get().getOrderDetails());
     }
 
-    @DeleteMapping(value = "/api/orderdetails/productName={productName}&shipperCompanyName={shipperCompanyName}&employeeLastName={employeeLastName}&employeeFirstName={employeeFirstName}&customerCompanyName={customerCompanyName}")
+    @DeleteMapping(value = "/api/orderDetails/{orderID}/{orderDetailsID}")
     @ResponseBody
-    public ResponseEntity<String> deleteOrderDetails(@PathVariable String shipperCompanyName, @PathVariable String productName, @PathVariable String employeeLastName, @PathVariable String employeeFirstName, @PathVariable String customerCompanyName){
-        Order order = ordersRepository.findByCustomerAndEmployeeAndShipVia(customersRepository.findByCompanyName(customerCompanyName),
-                employeesRepository.findByLastNameAndFirstName(employeeLastName, employeeFirstName), shippersRepository.findByCompanyName(shipperCompanyName));
-        Product product = productsRespository.findByProductName(productName);
-        OrderDetails orderDetails = orderDetailsRepository.findByOrderAndProduct(order, product);
-        if(orderDetails != null){
+    public ResponseEntity<String> deleteOrderDetails(@PathVariable String orderID, @PathVariable String orderDetailsID){
+        Order order = ordersRepository.findById(orderID).get();
+        OrderDetails orderDetails = orderDetailsRepository.findById(orderDetailsID).get();
+        if(orderDetails != null && order != null){
             orderDetailsRepository.delete(orderDetails);
+            ordersRepository.save(order);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }
         return ResponseEntity.ok("\"status\": \"order detail not existing\"");

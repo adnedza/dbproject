@@ -17,7 +17,7 @@ public class Product {
 
     private String productName;
 
-    private Supplier supplier;
+    private String supplierID;
 
     private Category category;
 
@@ -33,17 +33,13 @@ public class Product {
 
     private boolean discontinued;
 
-    public Product(String productName, Supplier supplier, Category category,
-                   int quantityPerUnit, double unitPrice, int unitsInStock,
-                   int unitsInOrder, int reorderLevel, boolean discontinued) {
-        this.productName = productName;
-        this.supplier = supplier;
-        this.category = category;
-        this.quantityPerUnit = quantityPerUnit;
-        this.unitPrice = unitPrice;
-        this.unitsInStock = unitsInStock;
-        this.unitsInOrder = unitsInOrder;
-        this.reorderLevel = reorderLevel;
-        this.discontinued = discontinued;
+    public Product(ProductsRequestBody productsRequestBody) {
+        this.productName = productsRequestBody.getProductName();
+        this.quantityPerUnit = productsRequestBody.getQuantityPerUnit();
+        this.unitPrice = productsRequestBody.getUnitPrice();
+        this.unitsInStock = productsRequestBody.getUnitsInStock();
+        this.unitsInOrder = productsRequestBody.getUnitsInOrder();
+        this.reorderLevel = productsRequestBody.getReorderLevel();
+        this.discontinued = productsRequestBody.isDiscontinued();
     }
 }

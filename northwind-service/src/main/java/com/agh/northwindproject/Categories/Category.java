@@ -6,8 +6,6 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-//categories - kategorie oferowanych produktów
-
 @Document(collection = "categories")
 @NoArgsConstructor
 @Getter @Setter
@@ -21,10 +19,10 @@ public class Category {
 
     private String picture;
 
-    public Category(String description, String categoryName, String picture) {
-        this.description = description;
-        this.categoryName = categoryName;
-        this.picture = picture;
+    public Category(CategoryRequestBody categoryRequestBody) {
+        this.description = categoryRequestBody.getDescription();
+        this.categoryName = categoryRequestBody.getCategoryName();
+        this.picture = categoryRequestBody.getPicture();
     }
 }
 

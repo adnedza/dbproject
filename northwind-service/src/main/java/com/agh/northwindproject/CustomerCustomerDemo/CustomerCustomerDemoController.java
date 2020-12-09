@@ -1,6 +1,8 @@
 package com.agh.northwindproject.CustomerCustomerDemo;
 
+import com.agh.northwindproject.CustomerDemographics.CustomerDemographic;
 import com.agh.northwindproject.CustomerDemographics.CustomerDemographicsRepository;
+import com.agh.northwindproject.Customers.Customer;
 import com.agh.northwindproject.Customers.CustomersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,43 +27,46 @@ public class CustomerCustomerDemoController {
         return ResponseEntity.ok(customerCustomerDemoRepository.findAll());
     }
 
-    @PostMapping(value = "/api/customerCustomerDemo")
+    @PostMapping(value = "/api/customerCustomerDemo/{customerID}/{customerDemographicsID}")
     @ResponseBody
-    public ResponseEntity<String> addNewCustomerCustomerDemo(@RequestBody CustomerCustomerDemoRequestBody customerCustomerDemoRequestBody){
-        CustomerCustomerDemo customerCustomerDemo = new CustomerCustomerDemo();
-
-        customerCustomerDemo.setCustomer(customersRepository.findByCompanyName(
-                customerCustomerDemoRequestBody.getCompanyName()));
-        customerCustomerDemo.setCustomerDemographic(customerDemographicsRepository.findByCustomerDesc(
-                customerCustomerDemoRequestBody.getCustomerDesc()));
-
-        customerCustomerDemoRepository.save(customerCustomerDemo);
-        return ResponseEntity.ok("\"status\": \"added\"");
-    }
-
-    @GetMapping(value = "/api/customersByCustomerDemographic/{customerDesc}")
-    @ResponseBody
-    public ResponseEntity<List<CustomerCustomerDemo>> getCustomersByCustomerDemographic(@PathVariable String customerDesc){
-        return ResponseEntity.ok(customerCustomerDemoRepository.findByCustomerDemographic(
-                customerDemographicsRepository.findByCustomerDesc(customerDesc)));
-    }
-
-    @GetMapping(value = "/api/customerCustomerDemo/{companyName}")
-    @ResponseBody
-    public ResponseEntity<CustomerCustomerDemo> getCustomerDemographic(String companyName){
-        return ResponseEntity.ok(customerCustomerDemoRepository.findByCustomer(
-                customersRepository.findByCompanyName(companyName)));
-    }
-
-    @DeleteMapping(value = "/api/customerCustomerDemo/{companyName}")
-    @ResponseBody
-    public ResponseEntity<String> deleteCustomerCustomerDemo(@PathVariable String companyName){
-        CustomerCustomerDemo customerCustomerDemo = customerCustomerDemoRepository.
-                findByCustomer(customersRepository.findByCompanyName(companyName));
-        if(customerCustomerDemo != null){
-            customerCustomerDemoRepository.delete(customerCustomerDemo);
-            return ResponseEntity.ok("\"status\": \"removed\"");
+    public ResponseEntity<String> addNewCustomerCustomerDemo(@PathVariable String customerID,
+                                                             @PathVariable String customerDemographicsID){
+        Customer customer = customersRepository.findById(customerID).get();
+        if(customer != null) {
+            CustomerDemographic customerDemographic = customerDemographicsRepository.findById(customerDemographicsID).get();
+            if (customerDemographic != null) {
+                CustomerCustomerDemo customerCustomerDemo = new CustomerCustomerDemo(customerDemographic);
+                customer.getCustomerCustomerDemo().add(customerCustomerDemo);
+                customerCustomerDemoRepository.save(customerCustomerDemo);
+                customersRepository.save(customer);
+                return ResponseEntity.ok("\"status\": \"added\"");
+            }
+            return ResponseEntity.ok("\"status\": \"customerDemographic not existing\"");
         }
-        return ResponseEntity.ok("\"status\": \"product already not existing, cannot remove\"");
+        return ResponseEntity.ok("\"status\": \"customer not existing\"");
+    }
+
+    @GetMapping(value = "/api/customersByCustomerDemographic/{customerID}")
+    @ResponseBody
+    public ResponseEntity<List<CustomerCustomerDemo>> getCustomerDemographics(@PathVariable String customerID){
+        return ResponseEntity.ok(customersRepository.findById(customerID).get().getCustomerCustomerDemo());
+    }
+
+    @DeleteMapping(value = "/api/customerCustomerDemo/{companyName}/{customerCustomerDemoID}")
+    @ResponseBody
+    public ResponseEntity<String> deleteCustomerCustomerDemo(@PathVariable String companyName,
+                                                             @PathVariable String customerCustomerDemoID) {
+        Customer customer = customersRepository.findByCompanyName(companyName);
+
+        if (customer != null) {
+            CustomerCustomerDemo customerCustomerDemo = customerCustomerDemoRepository
+                    .findById(customerCustomerDemoID).get();
+            if (customerCustomerDemo != null) {
+                customerCustomerDemoRepository.delete(customerCustomerDemo);
+                return ResponseEntity.ok("\"status\": \"removed\"");
+            }
+            return ResponseEntity.ok("\"status\": \"customerCustomerDemo not existing\"");
+        }
+        return ResponseEntity.ok("\"status\": \"customer not existing\"");
     }
 }

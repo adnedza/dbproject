@@ -1,7 +1,9 @@
 package com.agh.northwindproject.EmployeeTerritories;
 
+import com.agh.northwindproject.Employees.Employee;
 import com.agh.northwindproject.Employees.EmployeesRepository;
 import com.agh.northwindproject.Territories.TerritoriesRepository;
+import com.agh.northwindproject.Territories.Territory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +16,11 @@ public class EmployeeTerritoriesController {
     private EmployeesRepository employeesRepository;
 
     @Autowired
-    private TerritoriesRepository territoriesRepository;
+    private EmployeeTerritoriesRepository employeeTerritoriesRepository;
 
     @Autowired
-    private EmployeeTerritoriesRepository employeeTerritoriesRepository;
+    private TerritoriesRepository territoriesRepository;
+
 
     @GetMapping(value = "/api/employeeTerritories")
     @ResponseBody
@@ -25,47 +28,45 @@ public class EmployeeTerritoriesController {
         return ResponseEntity.ok(employeeTerritoriesRepository.findAll());
     }
 
-    @PostMapping(value = "/api/employeeTerritory")
+    @PostMapping(value = "/api/employeeTerritories/{employeeID}/{territoryDescription}")
     @ResponseBody
-    public ResponseEntity<String> addNewEmployeeTerritory(@RequestBody EmployeeTerritoryRequestBody employeeTerritoryRequestBody){
-        EmployeeTerritory employeeTerritory = new EmployeeTerritory();
-
-        employeeTerritory.setEmployee(employeesRepository.findByLastNameAndFirstName(
-                employeeTerritoryRequestBody.getLastName(),
-                employeeTerritoryRequestBody.getFirstName()));
-
-        employeeTerritory.setTerritory(territoriesRepository.findByTerritoryDescription(
-                employeeTerritoryRequestBody.getTerritoryDescription()));
-
-        employeeTerritoriesRepository.save(employeeTerritory);
-        return ResponseEntity.ok("\"status\": \"added\"");
-    }
-
-    @GetMapping(value = "/api/employeesByTerritory/{territoryDescription}")
-    @ResponseBody
-    public ResponseEntity<List<EmployeeTerritory>> getEmployeesByTerritory(@PathVariable String territoryDescription){
-        return ResponseEntity.ok(employeeTerritoriesRepository.findByTerritory(
-                territoriesRepository.findByTerritoryDescription(territoryDescription)));
-    }
-
-    @GetMapping(value = "/api/employeeTerritory/{lastName}/{firstName}")
-    @ResponseBody
-    public ResponseEntity<EmployeeTerritory> getEmployeeTerritoryByEmployeeName(@PathVariable String lastName,
-                                                                     @PathVariable String firstName){
-        return ResponseEntity.ok(employeeTerritoriesRepository.findByEmployee(
-                employeesRepository.findByLastNameAndFirstName(lastName, firstName)));
-    }
-
-    @DeleteMapping(value = "/api/employeeTerritory/{lastName}/{firstName}")
-    @ResponseBody
-    public ResponseEntity<String> deleteEmployeeTerritory(@PathVariable String lastName,
-                                                @PathVariable String firstName){
-        EmployeeTerritory employeeTerritory = employeeTerritoriesRepository.
-                findByEmployee(employeesRepository.findByLastNameAndFirstName(lastName, firstName));
-        if(employeeTerritory != null){
-            employeeTerritoriesRepository.delete(employeeTerritory);
-            return ResponseEntity.ok("\"status\": \"removed\"");
+    public ResponseEntity<String> addNewEmployeeTerritory(@PathVariable String employeeID,
+                                                          @PathVariable String territoryDescription) {
+        Employee employee = employeesRepository.findById(employeeID).get();
+        if (employee != null) {
+            Territory territory = territoriesRepository.findByTerritoryDescription(territoryDescription);
+            if (territory != null) {
+                EmployeeTerritory employeeTerritory = new EmployeeTerritory(territory);
+                employee.getEmployeeTerritories().add(employeeTerritory);
+                employeeTerritoriesRepository.save(employeeTerritory);
+                employeesRepository.save(employee);
+                return ResponseEntity.ok("\"status\": \"added\"");
+            }
+            return ResponseEntity.ok("\"status\": \"territory not existing\"");
         }
-        return ResponseEntity.ok("\"status\": \"product already not existing, cannot remove\"");
+        return ResponseEntity.ok("\"status\": \"employee not existing\"");
     }
+
+    @GetMapping(value = "/api/employeeTerritories/{employeeID}")
+    @ResponseBody
+    public ResponseEntity<List<EmployeeTerritory>> getEmployeeTerritoriesByEmployeeID(@PathVariable String employeeID) {
+        return ResponseEntity.ok(employeesRepository.findById(employeeID).get().getEmployeeTerritories());
+    }
+
+    @DeleteMapping(value = "/api/employee/{employeeID}/{employeeTerritoryID}")
+    @ResponseBody
+    public ResponseEntity<String> deleteEmployeeTerritory(@PathVariable String employeeID,
+                                                            @PathVariable String employeeTerritoryID) {
+        Employee employee = employeesRepository.findById(employeeID).get();
+        if (employee != null) {
+            EmployeeTerritory employeeTerritory = employeeTerritoriesRepository.findById(employeeTerritoryID).get();
+            if (employeeTerritory != null) {
+                employeeTerritoriesRepository.delete(employeeTerritory);
+                return ResponseEntity.ok("\"status\": \"removed\"");
+            }
+            return ResponseEntity.ok("\"status\": \"territory not existing\"");
+        }
+        return ResponseEntity.ok("\"status\": \"employee not existing\"");
+    }
+
 }

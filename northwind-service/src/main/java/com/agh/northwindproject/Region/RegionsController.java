@@ -17,10 +17,10 @@ public class RegionsController {
         return ResponseEntity.ok(regionsRepository.findAll());
     }
 
-    @PostMapping(value = "/api/region")
+    @PostMapping(value = "/api/region/")
     @ResponseBody
-    public ResponseEntity<String> addNewRegion(@RequestBody Region region){
-        regionsRepository.save(region);
+    public ResponseEntity<String> addNewRegion(@RequestBody RegionRequestBody regionRequestBody){
+        regionsRepository.save(new Region(regionRequestBody));
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
@@ -30,14 +30,14 @@ public class RegionsController {
         return ResponseEntity.ok(regionsRepository.findByRegionDescription(regionDescription));
     }
 
-    @DeleteMapping(value = "/api/region/{regionDescription}")
+    @DeleteMapping(value = "/api/region/{regionID}")
     @ResponseBody
-    public ResponseEntity<String> deleteRegion(@PathVariable String regionDescription){
-        Region region = regionsRepository.findByRegionDescription(regionDescription);
+    public ResponseEntity<String> deleteRegion(@PathVariable String regionID){
+        Region region = regionsRepository.findById(regionID).get();
         if(region != null){
             regionsRepository.delete(region);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }
-        return ResponseEntity.ok("\"status\": \"category not existing\"");
+        return ResponseEntity.ok("\"status\": \"region not existing\"");
     }
 }

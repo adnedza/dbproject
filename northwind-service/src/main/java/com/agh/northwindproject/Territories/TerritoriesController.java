@@ -21,10 +21,11 @@ public class TerritoriesController {
         return ResponseEntity.ok(territoriesRepository.findAll());
     }
 
-    @PostMapping(value = "/api/territory")
+    @PostMapping(value = "/api/territory/")
     @ResponseBody
-    public ResponseEntity<String> addNewTerritory(@RequestBody Territory territory){
-        territory.setRegion(regionsRepository.findByRegionDescription(territory.getRegion().getRegionDescription()));
+    public ResponseEntity<String> addNewTerritory(@RequestBody TerritoriesRequestBody territoriesRequestBody) {
+        Territory territory = new Territory(territoriesRequestBody);
+        territory.setRegion(regionsRepository.findById(territoriesRequestBody.getRegionID()).get());
         territoriesRepository.save(territory);
         return ResponseEntity.ok("\"status\": \"added\"");
     }
@@ -35,14 +36,14 @@ public class TerritoriesController {
         return ResponseEntity.ok(territoriesRepository.findByTerritoryDescription(territoryDescription));
     }
 
-    @DeleteMapping(value = "/api/territory/{territoryDescription}")
+    @DeleteMapping(value = "/api/territory/{territoryID}")
     @ResponseBody
-    public ResponseEntity<String> deleteTerritory(@PathVariable String territoryDescription){
-        Territory territory = territoriesRepository.findByTerritoryDescription(territoryDescription);
+    public ResponseEntity<String> deleteTerritory(@PathVariable String territoryID){
+        Territory territory = territoriesRepository.findById(territoryID).get();
         if(territory != null){
             territoriesRepository.delete(territory);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }
-        return ResponseEntity.ok("\"status\": \"product already not existing, cannot remove\"");
+        return ResponseEntity.ok("\"status\": \"territory not existing\"");
     }
 }

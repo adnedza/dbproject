@@ -1,5 +1,9 @@
 package com.agh.northwindproject.Employees;
 
+import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritoriesRepository;
+import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritory;
+import com.agh.northwindproject.Region.RegionsRepository;
+import com.agh.northwindproject.Territories.TerritoriesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,6 +15,15 @@ public class EmployeesController {
     @Autowired
     private EmployeesRepository employeesRepository;
 
+    @Autowired
+    private TerritoriesRepository territoriesRepository;
+
+    @Autowired
+    private RegionsRepository regionsRepository;
+
+    @Autowired
+    private EmployeeTerritoriesRepository employeeTerritoriesRepository;
+
     @GetMapping(value = "/api/employees")
     @ResponseBody
     public ResponseEntity<List<Employee>> getAllEmployees(){
@@ -19,8 +32,17 @@ public class EmployeesController {
 
     @PostMapping(value = "/api/employee")
     @ResponseBody
-    public ResponseEntity<String> addNewEmployee(@RequestBody Employee employee){
+    public ResponseEntity<String> addNewEmployee(@RequestBody EmployeeRequestBody employeeRequestBody){
+        Employee employee = new Employee(employeeRequestBody);
+
+        for (String territoryDescription : employeeRequestBody.getEmployeeTerritories()) {
+            EmployeeTerritory employeeTerritory = new EmployeeTerritory(
+                    territoriesRepository.findByTerritoryDescription(territoryDescription));
+            employee.getEmployeeTerritories().add(employeeTerritory);
+            employeeTerritoriesRepository.save(employeeTerritory);
+        }
         employeesRepository.save(employee);
+
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
@@ -31,15 +53,15 @@ public class EmployeesController {
         return ResponseEntity.ok(employeesRepository.findByLastNameAndFirstName(lastName, firstName));
     }
 
-    @DeleteMapping(value = "/api/region/{lastName}/{firstName}")
+
+    @DeleteMapping(value = "/api/employee/{employeeID}")
     @ResponseBody
-    public ResponseEntity<String> deleteEmployee(@PathVariable String lastName,
-                                               @PathVariable String firstName){
-        Employee employee = employeesRepository.findByLastNameAndFirstName(lastName, firstName);
+    public ResponseEntity<String> deleteEmployee(@PathVariable String employeeID){
+        Employee employee = employeesRepository.findById(employeeID).get();
         if(employee != null){
             employeesRepository.delete(employee);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }
-        return ResponseEntity.ok("\"status\": \"category not existing\"");
+        return ResponseEntity.ok("\"status\": \"employee not existing\"");
     }
 }

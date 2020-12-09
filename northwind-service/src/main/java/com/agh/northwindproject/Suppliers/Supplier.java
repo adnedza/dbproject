@@ -36,19 +36,17 @@ public class Supplier {
 
     private String homePage;
 
-    public Supplier(String companyName, String contactName, String contactTitle,
-                    String address, String city, String region, String postalCode,
-                    String country, String phone, String fax, String homePage) {
-        this.companyName = companyName;
-        this.contactName = contactName;
-        this.contactTitle = contactTitle;
-        this.address = address;
-        this.city = city;
-        this.region = region;
-        this.postalCode = postalCode;
-        this.country = country;
-        this.phone = phone;
-        this.fax = fax;
-        this.homePage = homePage;
+    public Supplier(SupplierRequestBody supplierRequestBody) {
+        this.companyName = supplierRequestBody.getCompanyName();
+        this.contactName = supplierRequestBody.getContactName();
+        this.contactTitle = supplierRequestBody.getContactTitle();
+        this.address = supplierRequestBody.getAddress();
+        this.city = supplierRequestBody.getCity();
+        this.region = supplierRequestBody.getRegion();
+        this.postalCode = supplierRequestBody.getPostalCode();
+        this.country = supplierRequestBody.getCountry();
+        this.phone = supplierRequestBody.getPhone();
+        this.fax = supplierRequestBody.getFax();
+        this.homePage = supplierRequestBody.getHomePage();
     }
 }

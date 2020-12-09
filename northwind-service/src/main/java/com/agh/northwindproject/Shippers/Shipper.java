@@ -17,8 +17,8 @@ public class Shipper {
 
     private String phone;
 
-    public Shipper(String companyName, String phone) {
-        this.companyName = companyName;
-        this.phone = phone;
+    public Shipper(ShipperRequestBody shipperRequestBody) {
+        this.companyName = shipperRequestBody.getCompanyName();
+        this.phone = shipperRequestBody.getPhone();
     }
 }

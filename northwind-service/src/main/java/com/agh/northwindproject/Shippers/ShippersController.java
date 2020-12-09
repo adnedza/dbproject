@@ -19,10 +19,10 @@ public class ShippersController {
         return ResponseEntity.ok(shippersRepository.findAll());
     }
 
-    @PostMapping(value = "/api/shipper")
+    @PostMapping(value = "/api/shipper/")
     @ResponseBody
-    public ResponseEntity<String> addNewShipper(@RequestBody Shipper shipper){
-        shippersRepository.save(shipper);
+    public ResponseEntity<String> addNewShipper(@RequestBody ShipperRequestBody shipperRequestBody){
+        shippersRepository.save(new Shipper(shipperRequestBody));
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
@@ -32,10 +32,10 @@ public class ShippersController {
         return ResponseEntity.ok(shippersRepository.findByCompanyName(companyName));
     }
 
-    @DeleteMapping(value = "/api/shipper/{companyName}")
+    @DeleteMapping(value = "/api/shipper/{shipperID}")
     @ResponseBody
-    public ResponseEntity<String> deleteShipper(@PathVariable String companyName){
-        Shipper shipper = shippersRepository.findByCompanyName(companyName);
+    public ResponseEntity<String> deleteShipper(@PathVariable String shipperID){
+        Shipper shipper = shippersRepository.findById(shipperID).get();
         if(shipper != null){
             shippersRepository.delete(shipper);
             return ResponseEntity.ok("\"status\": \"removed\"");

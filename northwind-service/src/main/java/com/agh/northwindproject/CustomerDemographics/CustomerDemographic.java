@@ -6,7 +6,6 @@ import lombok.Setter;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-
 @Document(collection = "customerDemographics")
 @NoArgsConstructor
 @Getter @Setter
@@ -16,7 +15,7 @@ public class CustomerDemographic {
 
     private String customerDesc;
 
-    public CustomerDemographic(String customerDesc) {
-        this.customerDesc = customerDesc;
+    public CustomerDemographic(CustomerDemographicsRequestBody customerDemographicsRequestBody) {
+        this.customerDesc = customerDemographicsRequestBody.getCustomerDesc();
     }
 }

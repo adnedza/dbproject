@@ -20,8 +20,8 @@ public class SuppliersController {
 
     @PostMapping(value = "/api/supplier")
     @ResponseBody
-    public ResponseEntity<String> addNewSupplier(@RequestBody Supplier supplierData){
-        suppliersRepository.save(supplierData);
+    public ResponseEntity<String> addNewSupplier(@RequestBody SupplierRequestBody supplierRequestBody){
+        suppliersRepository.save(new Supplier(supplierRequestBody));
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
@@ -31,14 +31,14 @@ public class SuppliersController {
         return ResponseEntity.ok(suppliersRepository.findByCompanyName(companyName));
     }
 
-    @DeleteMapping(value = "/api/supplier/{companyName}")
+    @DeleteMapping(value = "/api/supplier/{supplierID}")
     @ResponseBody
-    public ResponseEntity<String> deleteSupplier(@PathVariable String companyName){
-        Supplier supplier = suppliersRepository.findByCompanyName(companyName);
+    public ResponseEntity<String> deleteSupplier(@PathVariable String supplierID){
+        Supplier supplier = suppliersRepository.findById(supplierID).get();
         if(supplier != null){
             suppliersRepository.delete(supplier);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }
-        return ResponseEntity.ok("\"status\": \"company not existing\"");
+        return ResponseEntity.ok("\"status\": \"supplier not existing\"");
     }
 }

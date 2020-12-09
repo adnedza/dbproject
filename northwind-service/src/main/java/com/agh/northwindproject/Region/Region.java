@@ -15,7 +15,7 @@ public class Region {
 
     private String regionDescription;
 
-    public Region(String regionDescription) {
-        this.regionDescription = regionDescription;
+    public Region(RegionRequestBody regionDescription) {
+        this.regionDescription = regionDescription.getRegionDescription();
     }
 }

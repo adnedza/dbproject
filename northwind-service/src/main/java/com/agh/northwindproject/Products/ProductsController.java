@@ -28,9 +28,10 @@ public class ProductsController {
 
     @PostMapping(value = "/api/product")
     @ResponseBody
-    public ResponseEntity<String> addNewProduct(@RequestBody Product product){
-        product.setCategory(categoriesRepository.findByCategoryName(product.getCategory().getCategoryName()));
-        product.setSupplier(suppliersRepository.findByCompanyName(product.getSupplier().getCompanyName()));
+    public ResponseEntity<String> addNewProduct(@RequestBody ProductsRequestBody productsRequestBody){
+        Product product = new Product(productsRequestBody);
+        product.setCategory(categoriesRepository.findById(productsRequestBody.getCategoryID()).get());
+        product.setSupplierID(suppliersRepository.findById(productsRequestBody.getSupplierID()).get().getId());
         productsRespository.save(product);
         return ResponseEntity.ok("\"status\": \"added\"");
     }
@@ -41,10 +42,10 @@ public class ProductsController {
         return ResponseEntity.ok(productsRespository.findByProductName(productName));
     }
 
-    @DeleteMapping(value = "/api/product/{productName}")
+    @DeleteMapping(value = "/api/product/{productID}")
     @ResponseBody
-    public ResponseEntity<String> deleteProduct(@PathVariable String productName){
-        Product product = productsRespository.findByProductName(productName);
+    public ResponseEntity<String> deleteProduct(@PathVariable String productID){
+        Product product = productsRespository.findById(productID).get();
         if(product != null){
             productsRespository.delete(product);
             return ResponseEntity.ok("\"status\": \"removed\"");

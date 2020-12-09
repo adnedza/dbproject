@@ -18,8 +18,7 @@ public class Territory {
 
     private Region region;
 
-    public Territory(String territoryDescription, Region region) {
-        this.territoryDescription = territoryDescription;
-        this.region = region;
+    public Territory(TerritoriesRequestBody territoriesRequestBody) {
+        this.territoryDescription = territoriesRequestBody.getTerritoryDescription();
     }
 }

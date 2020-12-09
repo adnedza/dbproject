@@ -1,6 +1,5 @@
 package com.agh.northwindproject.EmployeeTerritories;
 
-import com.agh.northwindproject.Employees.Employee;
 import com.agh.northwindproject.Territories.Territory;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,12 +14,9 @@ public class EmployeeTerritory {
     @Id
     private String id;
 
-    private Employee employee;
-
     private Territory territory;
 
-    public EmployeeTerritory(Employee employee, Territory territory) {
-        this.employee = employee;
+    public EmployeeTerritory(Territory territory) {
         this.territory = territory;
     }
 }

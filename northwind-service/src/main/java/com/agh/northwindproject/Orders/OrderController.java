@@ -1,12 +1,12 @@
 package com.agh.northwindproject.Orders;
 
-import com.agh.northwindproject.Categories.CategoriesRepository;
 import com.agh.northwindproject.Customers.CustomersRepository;
 import com.agh.northwindproject.Employees.EmployeesRepository;
-import com.agh.northwindproject.Products.Product;
+import com.agh.northwindproject.OrderDetails.OrderDetails;
+import com.agh.northwindproject.OrderDetails.OrderDetailsRepository;
+import com.agh.northwindproject.OrderDetails.OrderDetailsRequestBody;
 import com.agh.northwindproject.Products.ProductsRespository;
 import com.agh.northwindproject.Shippers.ShippersRepository;
-import com.agh.northwindproject.Suppliers.SuppliersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +28,12 @@ public class OrderController {
     @Autowired
     private ShippersRepository shippersRepository;
 
+    @Autowired
+    private ProductsRespository productsRespository;
+
+    @Autowired
+    private OrderDetailsRepository orderDetailsRepository;
+
     @GetMapping(value = "/api/orders")
     @ResponseBody
     public ResponseEntity<List<Order>> getAllOrders(){
@@ -36,27 +42,45 @@ public class OrderController {
 
     @PostMapping(value = "/api/order")
     @ResponseBody
-    public ResponseEntity<String> addNewOrder(@RequestBody Order order){
-        order.setCustomer(customersRepository.findByCompanyName(order.getCustomer().getCompanyName()));
-        order.setEmployee(employeesRepository.findByLastNameAndFirstName(order.getEmployee().getLastName(), order.getEmployee().getFirstName()));
-        order.setShipVia(shippersRepository.findByCompanyName(order.getShipVia().getCompanyName()));
+    public ResponseEntity<String> addNewOrder(@RequestBody OrderRequestBody orderRequestBody){
+        Order order = new Order(orderRequestBody);
+
+        order.setCustomerID(customersRepository.findByCompanyName(orderRequestBody.getCustomerCompanyName()).getId());
+        order.setEmployeeID(employeesRepository.findByLastNameAndFirstName(orderRequestBody.getEmployeeLastName(),
+                orderRequestBody.getEmployeeFirstName()).getId());
+        order.setShipperID(shippersRepository.findByCompanyName(orderRequestBody.getShipperCompanyName()).getId());
+
+        for(OrderDetailsRequestBody orderDetailsRequestBody : orderRequestBody.getOrderDetails()) {
+            OrderDetails orderDetails = new OrderDetails(orderDetailsRequestBody);
+            orderDetails.setProductID(productsRespository.findByProductName(orderDetailsRequestBody.getProductName()).getId());
+            orderDetailsRepository.save(orderDetails);
+            order.getOrderDetails().add(orderDetails);
+        }
+
         ordersRepository.save(order);
+
+
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
-    @GetMapping(value = "/api/order/customerCompanyName={customerCompanyName}&shipperCompanyName={shipperCompanyName}&employeeLastName={employeeLastName}&employeeFirstName={employeeFirstName}")
+    @GetMapping(value = "/api/order/{customerCompanyName}/{employeeLastName}/{employeeFirstName}")
     @ResponseBody
-    public ResponseEntity<Order> getOrderByCustomerAndEmployeeAndShipVia(@PathVariable String customerCompanyName, @PathVariable String shipperCompanyName, @PathVariable String employeeLastName, @PathVariable String employeeFirstName){
-        return ResponseEntity.ok(ordersRepository.findByCustomerAndEmployeeAndShipVia(customersRepository.findByCompanyName(customerCompanyName),
-                employeesRepository.findByLastNameAndFirstName(employeeLastName, employeeFirstName), shippersRepository.findByCompanyName(shipperCompanyName)));
+    public ResponseEntity<List<Order>> getOrdersByCustomerAndEmployee(@PathVariable String customerCompanyName, @PathVariable String employeeLastName, @PathVariable String employeeFirstName){
+        return ResponseEntity.ok(ordersRepository.findByCustomerIDAndEmployeeID(
+                customersRepository.findByCompanyName(customerCompanyName).getId(),
+                employeesRepository.findByLastNameAndFirstName(employeeLastName, employeeFirstName).getId()
+        ));
     }
 
-    @DeleteMapping(value = "/api/order/customerCompanyName={customerCompanyName}&shipperCompanyName={shipperCompanyName}&employeeLastName={employeeLastName}&employeeFirstName={employeeFirstName}")
+    @DeleteMapping(value = "/api/order/{orderID}")
     @ResponseBody
-    public ResponseEntity<String> deleteOrder(@PathVariable String customerCompanyName, @PathVariable String shipperCompanyName, @PathVariable String employeeLastName, @PathVariable String employeeFirstName){
-        Order order = ordersRepository.findByCustomerAndEmployeeAndShipVia(customersRepository.findByCompanyName(customerCompanyName),
-                employeesRepository.findByLastNameAndFirstName(employeeLastName, employeeFirstName), shippersRepository.findByCompanyName(shipperCompanyName));
+    public ResponseEntity<String> deleteOrder(@PathVariable String orderID){
+        Order order = ordersRepository.findById(orderID).get();
         if(order != null){
+            for (OrderDetails orderDetails : order.getOrderDetails()) {
+                orderDetailsRepository.delete(orderDetails);
+            }
+
             ordersRepository.delete(order);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }

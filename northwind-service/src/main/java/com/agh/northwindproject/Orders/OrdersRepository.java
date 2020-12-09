@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface OrdersRepository extends MongoRepository<Order, String> {
     List<Order> findAll();
-    Order findByCustomerAndEmployeeAndShipVia(Customer customer, Employee employee, Shipper shipper);
+    List<Order> findByCustomerIDAndEmployeeID(String customerID, String employeeID);
 }

@@ -20,8 +20,8 @@ public class CategoriesController {
 
     @PostMapping(value = "/api/category")
     @ResponseBody
-    public ResponseEntity<String> addNewCategory(@RequestBody Category category){
-        categoriesRepository.save(category);
+    public ResponseEntity<String> addNewCategory(@RequestBody CategoryRequestBody categoryRequestBody){
+        categoriesRepository.save(new Category(categoryRequestBody));
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
@@ -31,10 +31,10 @@ public class CategoriesController {
         return ResponseEntity.ok(categoriesRepository.findByCategoryName(categoryName));
     }
 
-    @DeleteMapping(value = "/api/category/{categoryName}")
+    @DeleteMapping(value = "/api/category/{categoryID}")
     @ResponseBody
-    public ResponseEntity<String> deleteCategory(@PathVariable String categoryName){
-        Category category = categoriesRepository.findByCategoryName(categoryName);
+    public ResponseEntity<String> deleteCategory(@PathVariable String categoryID){
+        Category category = categoriesRepository.findById(categoryID).get();
         if(category != null){
             categoriesRepository.delete(category);
             return ResponseEntity.ok("\"status\": \"removed\"");
