@@ -71,26 +71,13 @@ Dokument NoSQL:
   "productName": "string",
   "quantityPerUnit": 0,
   "reorderLevel": 0,
-  "supplier": {
-    "address": "string",
-    "city": "string",
-    "companyName": "string",
-    "contactName": "string",
-    "contactTitle": "string",
-    "country": "string",
-    "fax": "string",
-    "homePage": "string",
-    "id": "string",
-    "phone": "string",
-    "postalCode": "string",
-    "region": "string"
-  },
+  "supplierID": "string",
   "unitPrice": 0,
   "unitsInOrder": 0,
   "unitsInStock": 0
 }
 ```
-W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Supplier jak i z obiektu Category w całości są przekazywane do dokumentu Products.
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty Supplier i Category są przekazywane w postaci ich numerów id do dokumentu Products.
 
 Jeśli chodzi o kwestię dodawania produktów, a raczej dodawania obiektu Supplier i Category to preferowaną przez nas opcją jest przekazanie samych parametrów categoryName/companyName, po których możemy odszukać daną kategorię/dostawcę.
 
@@ -163,41 +150,20 @@ Dokument NoSQL:
 ```
 {
     "id": "string",
-    "employee": {
-      "id": "string",
-      "lastName": "string",
-      "firstName": "string",
-      "title": "string",
-      "titleOfCourtesy": "string",
-      "birthDate": "2020-12-04T08:35:03.328Z",
-      "hireDate": "2020-12-04T08:35:03.328Z",
-      "address": "string",
-      "city": "string",
-      "region": "string",
-      "postalCode": "string",
-      "country": "string",
-      "homePhone": "string",
-      "extension": "string",
-      "photo": "string",
-      "notes": "string",
-      "reportsTo": "string",
-      "photoPath": "string"
-    },
     "territory": {
       "id": "string",
-      "territoryDescription": "string",
       "region": {
         "id": "string",
         "regionDescription": "string"
-      }
+      },
+      "territoryDescription": "string"
     }
   }
 ``` 
-W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Territory jak i z obiektu Employee, w całości są przekazywane do dokumentu EmployeeTerritories.
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty Territory są przekazywane w całości do dokumentu EmployeeTerritories.
 
-Jeśli chodzi o kwestię dodawania obiektu Employee i Territory, to preferowaną przez nas opcją jest przekazanie samych parametrów:
-firstName,lastName/territoryDescription, po których możemy odszukać danego pracownika/terytorium.
-
+Jeśli chodzi o kwestię dodawania obiektu EmployeeTerritories do obiektu Employee, preferowaną przez nas opcją jest przekazanie samych parametrów:
+employeeID/territoryDescription, po których możemy odszukać danego pracownika/terytorium.
 
 
 ### Employee:
@@ -209,12 +175,25 @@ Dokument NoSQL:
 ```
 {
   "address": "string",
-  "birthDate": "2020-12-04T08:35:03.328Z",
+  "birthDate": "2020-12-09T11:38:34.146Z",
   "city": "string",
   "country": "string",
+  "employeeTerritories": [
+    {
+      "id": "string",
+      "territory": {
+        "id": "string",
+        "region": {
+          "id": "string",
+          "regionDescription": "string"
+        },
+        "territoryDescription": "string"
+      }
+    }
+  ],
   "extension": "string",
   "firstName": "string",
-  "hireDate": "2020-12-04T08:35:03.328Z",
+  "hireDate": "2020-12-09T11:38:34.147Z",
   "homePhone": "string",
   "id": "string",
   "lastName": "string",
@@ -228,7 +207,7 @@ Dokument NoSQL:
   "titleOfCourtesy": "string"
 }
 ``` 
-Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty EmployeeTerritories są przekazywane w całości, w postaci listy, do dokumentu Employee.
 
 
 ### CustomerDemographics:
@@ -254,27 +233,16 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-    "id": "string",
-    "customer": {
-      "id": "string",
-      "companyName": "string",
-      "contactTitle": "string",
-      "address": "string",
-      "postalCode": "string",
-      "country": "string",
-      "phone": "string",
-      "fax": "string",
-      "region": "string"
-    },
     "customerDemographic": {
-      "id": "string",
-      "customerDesc": "string"
-    }
-  }
+      "customerDesc": "string",
+      "id": "string"
+    },
+    "id": "string"
+ }
 ``` 
-W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Customer jak i z obiektu CustomerDemographic, w całości są przekazywane do dokumentu CustomerCustomerDemo.
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty CustomerDemographic w całości są przekazywane do dokumentu CustomerCustomerDemo.
 
-Jeśli chodzi o kwestię dodawania obiektu Customer i CustomerDemographic to preferowaną przez nas opcją jest przekazanie samych parametrów: companyName/customerDesc, po których możemy odszukać danego klienta/grupę klientów.
+Jeśli chodzi o kwestię dodawania obiektu CustomerCustomerDemo do obiektu Customer, to preferowaną przez nas opcją jest przekazanie samych parametrów: customerID/customerDesc, po których możemy odszukać danego klienta/grupę klientów.
 
 
 ### Customers:
@@ -289,6 +257,15 @@ Dokument NoSQL:
   "companyName": "string",
   "contactTitle": "string",
   "country": "string",
+  "customerCustomerDemo": [
+    {
+      "customerDemographic": {
+        "customerDesc": "string",
+        "id": "string"
+      },
+      "id": "string"
+    }
+  ],
   "fax": "string",
   "id": "string",
   "phone": "string",
@@ -296,7 +273,8 @@ Dokument NoSQL:
   "region": "string"
 }
 ``` 
-Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty customerCustomerDemo są przekazywane w całości, w postaci listy, do dokumentu Customers.
+
 
 ### Shippers:
 
@@ -321,55 +299,32 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-  "customer": {
-    "address": "string",
-    "companyName": "string",
-    "contactTitle": "string",
-    "country": "string",
-    "fax": "string",
+    "customerID": "string",
+    "employeeID": "string",
+    "freight": "string",
     "id": "string",
-    "phone": "string",
-    "postalCode": "string",
-    "region": "string"
-  },
-  "employee": {
-    "address": "string",
-    "birthDate": "2020-12-04T20:05:25.715Z",
-    "city": "string",
-    "country": "string",
-    "extension": "string",
-    "firstName": "string",
-    "hireDate": "2020-12-04T20:05:25.715Z",
-    "homePhone": "string",
-    "id": "string",
-    "lastName": "string",
-    "notes": "string",
-    "photo": "string",
-    "photoPath": "string",
-    "postalCode": "string",
-    "region": "string",
-    "reportsTo": "string",
-    "title": "string",
-    "titleOfCourtesy": "string"
-  },
-  "freight": "string",
-  "id": "string",
-  "orderDate": "2020-12-04T20:05:25.715Z",
-  "requiredDate": "2020-12-04T20:05:25.715Z",
-  "shipCity": "string",
-  "shipCountry": "string",
-  "shipName": "string",
-  "shipPostalCode": "string",
-  "shipRegion": "string",
-  "shipVia": {
-    "companyName": "string",
-    "id": "string",
-    "phone": "string"
-  },
-  "shippedDate": "2020-12-04T20:05:25.715Z"
-}
+    "orderDate": "2020-12-09T12:22:51.964Z",
+    "orderDetails": [
+      {
+        "discount": 0,
+        "id": "string",
+        "productID": "string",
+        "quantity": 0,
+        "unitPrice": 0
+      }
+    ],
+    "requiredDate": "2020-12-09T12:22:51.964Z",
+    "shipCity": "string",
+    "shipCountry": "string",
+    "shipName": "string",
+    "shipPostalCode": "string",
+    "shipRegion": "string",
+    "shippedDate": "2020-12-09T12:22:51.964Z",
+    "shipperID": "string"
+  }
 ```
-W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Customer, Employee oraz Shipper, w całości są przekazywane do dokumentu Order.
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Customer, Employee oraz Shipper
+są przekazywane w postaci ich numerów id do dokumentu Orders, natomiast obiekty OrderDetails przekazywane są w całości, w postaci listy, do dokumentu Orders.
 
 Jeśli chodzi o kwestię dodawania obiektów Customer, Employee oraz Shipper to preferowaną przez nas opcją jest przekazanie samych parametrów: companyName(Customer)/firstName+lastName(Employee)/companyName(Shipper), po których możemy wyszukać te obiekty.
 
@@ -381,91 +336,13 @@ Tabela SQL:\
 Dokument NoSQL:
 ```
 {
-  "discount": 0,
-  "id": "string",
-  "order": {
-    "customer": {
-      "address": "string",
-      "companyName": "string",
-      "contactTitle": "string",
-      "country": "string",
-      "fax": "string",
-      "id": "string",
-      "phone": "string",
-      "postalCode": "string",
-      "region": "string"
-    },
-    "employee": {
-      "address": "string",
-      "birthDate": "2020-12-04T20:05:50.737Z",
-      "city": "string",
-      "country": "string",
-      "extension": "string",
-      "firstName": "string",
-      "hireDate": "2020-12-04T20:05:50.737Z",
-      "homePhone": "string",
-      "id": "string",
-      "lastName": "string",
-      "notes": "string",
-      "photo": "string",
-      "photoPath": "string",
-      "postalCode": "string",
-      "region": "string",
-      "reportsTo": "string",
-      "title": "string",
-      "titleOfCourtesy": "string"
-    },
-    "freight": "string",
+    "discount": 0,
     "id": "string",
-    "orderDate": "2020-12-04T20:05:50.737Z",
-    "requiredDate": "2020-12-04T20:05:50.737Z",
-    "shipCity": "string",
-    "shipCountry": "string",
-    "shipName": "string",
-    "shipPostalCode": "string",
-    "shipRegion": "string",
-    "shipVia": {
-      "companyName": "string",
-      "id": "string",
-      "phone": "string"
-    },
-    "shippedDate": "2020-12-04T20:05:50.737Z"
-  },
-  "product": {
-    "category": {
-      "categoryName": "string",
-      "description": "string",
-      "id": "string",
-      "picture": "string"
-    },
-    "discontinued": true,
-    "id": "string",
-    "productName": "string",
-    "quantityPerUnit": 0,
-    "reorderLevel": 0,
-    "supplier": {
-      "address": "string",
-      "city": "string",
-      "companyName": "string",
-      "contactName": "string",
-      "contactTitle": "string",
-      "country": "string",
-      "fax": "string",
-      "homePage": "string",
-      "id": "string",
-      "phone": "string",
-      "postalCode": "string",
-      "region": "string"
-    },
-    "unitPrice": 0,
-    "unitsInOrder": 0,
-    "unitsInStock": 0
-  },
-  "quantity": 0,
-  "unitPrice": 0
-}
+    "productID": "string",
+    "quantity": 0,
+    "unitPrice": 0
+  }
 ```
-W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Order oraz Product w całości są przekazywane do dokumentu OrderDetails.
+W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Product w całości są przekazywane w postaci ich numerów id do dokumentu OrderDetails.
 
-Jeśli chodzi o kwestię dodawania obiektów Order oraz Product to obiekt Product wyszukujemy za pomocą parametru productName, natomiast obiekt Order wyszukujemy za pomocą takich samych parametrów jak w tabeli Order (opis powyżej).
-
+Jeśli chodzi o kwestię dodawania obiektów OrderDetails do obiektu Order, to preferowaną przez nas opcją jest przekazanie samych parametrów: orderID oraz body z polami discount, productName, quantity, unitPrice.
