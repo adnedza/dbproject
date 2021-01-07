@@ -1,5 +1,6 @@
 package com.agh.northwindproject.Shippers;
 
+import com.agh.northwindproject.Employees.Employee;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +8,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class ShippersController {
     @Autowired
     private ShippersRepository shippersRepository;
@@ -30,6 +33,12 @@ public class ShippersController {
     @ResponseBody
     public ResponseEntity<Shipper> getShipperByCompanyName(@PathVariable String companyName){
         return ResponseEntity.ok(shippersRepository.findByCompanyName(companyName));
+    }
+
+    @GetMapping(value = "/api/shipper/id/{id}")
+    @ResponseBody
+    public ResponseEntity<Optional<Shipper>> getCustomerById(@PathVariable String id){
+        return ResponseEntity.ok(shippersRepository.findById(id));
     }
 
     @DeleteMapping(value = "/api/shipper/{shipperID}")

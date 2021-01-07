@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class CustomersController {
     @Autowired
     private CustomersRepository customersRepository;
@@ -37,6 +39,12 @@ public class CustomersController {
         }
         customersRepository.save(customer);
         return ResponseEntity.ok("\"status\": \"added\"");
+    }
+
+    @GetMapping(value = "/api/customer/id/{id}")
+    @ResponseBody
+    public ResponseEntity<Optional<Customer>> getCustomerById(@PathVariable String id){
+        return ResponseEntity.ok(customersRepository.findById(id));
     }
 
     @GetMapping(value = "/api/customer/{companyName}")

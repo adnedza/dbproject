@@ -7,8 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class ProductsController {
 
     @Autowired
@@ -40,6 +42,12 @@ public class ProductsController {
     @ResponseBody
     public ResponseEntity<Product> getProductByProductName(@PathVariable String productName){
         return ResponseEntity.ok(productsRespository.findByProductName(productName));
+    }
+
+    @GetMapping(value = "/api/product/id/{productID}")
+    @ResponseBody
+    public ResponseEntity<Optional<Product>> getProductById(@PathVariable String productID){
+        return ResponseEntity.ok(productsRespository.findById(productID));
     }
 
     @DeleteMapping(value = "/api/product/{productID}")

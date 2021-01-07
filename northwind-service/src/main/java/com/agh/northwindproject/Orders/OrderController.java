@@ -11,9 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
+@CrossOrigin
 public class OrderController {
 
     @Autowired
@@ -40,6 +43,15 @@ public class OrderController {
         return ResponseEntity.ok(ordersRepository.findAll());
     }
 
+    @GetMapping(value = "/api/order/{orderId}")
+    @ResponseBody
+    public ResponseEntity<Order> getOrder(@PathVariable String orderId){
+        Optional<Order> order = ordersRepository.findById(orderId);
+        if(order.isPresent())
+            return ResponseEntity.ok(order.get());
+        return null;
+    }
+
     @PostMapping(value = "/api/order")
     @ResponseBody
     public ResponseEntity<String> addNewOrder(@RequestBody OrderRequestBody orderRequestBody){
@@ -49,6 +61,7 @@ public class OrderController {
         order.setEmployeeID(employeesRepository.findByLastNameAndFirstName(orderRequestBody.getEmployeeLastName(),
                 orderRequestBody.getEmployeeFirstName()).getId());
         order.setShipperID(shippersRepository.findByCompanyName(orderRequestBody.getShipperCompanyName()).getId());
+        order.setOrderDate( Calendar.getInstance().getTime());
 
         for(OrderDetailsRequestBody orderDetailsRequestBody : orderRequestBody.getOrderDetails()) {
             OrderDetails orderDetails = new OrderDetails(orderDetailsRequestBody);
