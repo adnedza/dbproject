@@ -44,7 +44,7 @@ Vue.prototype.$axios = axios;
 
 Vue.prototype.$api = "http://localhost:8080";
 
-if (process.env.NODE_ENV === 'production') {
+if (process.env.DOCKER === 'TRUE') {
     Vue.prototype.$api = "http://northwind-service:8080";
 }
 

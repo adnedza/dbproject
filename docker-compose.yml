@@ -7,21 +7,38 @@ services:
       MONGO_INITDB_DATABASE: db_northwind
       MONGO_INITDB_ROOT_USERNAME: springuser
       MONGO_INITDB_ROOT_PASSWORD: Password
-    #restart: always  ##used when you wto start docker automatically on startup of systemant 
+    #restart: always  ##used when you wto start docker automatically on startup of systemant
     ports:
       - "27017:27017"
     volumes:
       - mongodb-dbnorthwind-volume:/data/db
+    networks:
+      - northwind-service-network
 
   northwind-service:
-    image: northwind-service:latest
+    image: northwind-service
     container_name: 'northwind-service'
+    build: northwind-service/.
     environment:
       MONGODB_HOST: mongo
-    #restart: always ##used when you wto start docker automatically on startup of systemant 
+    #restart: always ##used when you wto start docker automatically on startup of systemant
     ports:
       - 8080:8080
+    networks:
+      - northwind-service-network
+  northwind-front:
+    image: northwind-front
+    container_name: 'northwind-front'
+    build: northwind-front/.
+    environment:
+      DOCKER: "true"
+    ports:
+      - 9000:9000
+    networks:
+      - northwind-service-network
 
 volumes:
   mongodb-dbnorthwind-volume:
 
+networks:
+  northwind-service-network:
