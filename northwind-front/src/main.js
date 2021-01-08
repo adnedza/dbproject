@@ -41,7 +41,13 @@ import SingleOrder from "./Order/SingleOrder.vue";
 export const bus = new Vue();
 
 Vue.prototype.$axios = axios;
+
 Vue.prototype.$api = "http://localhost:8080";
+
+if (process.env.NODE_ENV === 'production') {
+    Vue.prototype.$api = "http://northwind-service:8080";
+}
+
 Vue.prototype.WindowVariable = window;
 //axios.defaults.withCredentials = true;
 
