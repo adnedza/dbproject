@@ -1,6 +1,5 @@
 package com.agh.northwindproject.Orders;
 
-import com.agh.northwindproject.OrderDetails.OrderDetailsRequestBody;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

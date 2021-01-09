@@ -1,6 +1,5 @@
 package com.agh.northwindproject.Orders;
 
-import com.agh.northwindproject.OrderDetails.OrderDetails;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -43,8 +42,7 @@ public class Order {
 
     private String shipCountry;
 
-    @DBRef
-    private List<OrderDetails> orderDetails = new ArrayList<>();
+    private List<OrderDetails> orderDetailNews = new ArrayList<>();
 
     public Order(String customerID, String employeeID, String shipperID, Date orderDate,
                  Date requiredDate, Date shippedDate,

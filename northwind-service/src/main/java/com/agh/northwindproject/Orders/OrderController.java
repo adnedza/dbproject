@@ -2,9 +2,7 @@ package com.agh.northwindproject.Orders;
 
 import com.agh.northwindproject.Customers.CustomersRepository;
 import com.agh.northwindproject.Employees.EmployeesRepository;
-import com.agh.northwindproject.OrderDetails.OrderDetails;
-import com.agh.northwindproject.OrderDetails.OrderDetailsRepository;
-import com.agh.northwindproject.OrderDetails.OrderDetailsRequestBody;
+import com.agh.northwindproject.Products.Product;
 import com.agh.northwindproject.Products.ProductsRespository;
 import com.agh.northwindproject.Shippers.ShippersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +32,6 @@ public class OrderController {
     @Autowired
     private ProductsRespository productsRespository;
 
-    @Autowired
-    private OrderDetailsRepository orderDetailsRepository;
-
     @GetMapping(value = "/api/orders")
     @ResponseBody
     public ResponseEntity<List<Order>> getAllOrders(){
@@ -64,15 +59,18 @@ public class OrderController {
         order.setOrderDate( Calendar.getInstance().getTime());
 
         for(OrderDetailsRequestBody orderDetailsRequestBody : orderRequestBody.getOrderDetails()) {
-            OrderDetails orderDetails = new OrderDetails(orderDetailsRequestBody);
-            orderDetails.setProductID(productsRespository.findByProductName(orderDetailsRequestBody.getProductName()).getId());
-            orderDetailsRepository.save(orderDetails);
-            order.getOrderDetails().add(orderDetails);
+            if(productsRespository.findByProductName(orderDetailsRequestBody.getProductName()).getUnitsInStock()
+                    - orderDetailsRequestBody.getQuantity() >= 0) {
+                Product product = productsRespository.findByProductName(orderDetailsRequestBody.getProductName());
+                OrderDetails orderDetails = new OrderDetails(product, orderDetailsRequestBody);
+                order.getOrderDetailNews().add(orderDetails);
+                product.setUnitsInOrder(product.getUnitsInOrder() + orderDetailsRequestBody.getQuantity());
+                product.setUnitsInStock(product.getUnitsInStock() - orderDetailsRequestBody.getQuantity());
+                productsRespository.save(product);
+            }
         }
 
         ordersRepository.save(order);
-
-
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
@@ -90,10 +88,6 @@ public class OrderController {
     public ResponseEntity<String> deleteOrder(@PathVariable String orderID){
         Order order = ordersRepository.findById(orderID).get();
         if(order != null){
-            for (OrderDetails orderDetails : order.getOrderDetails()) {
-                orderDetailsRepository.delete(orderDetails);
-            }
-
             ordersRepository.delete(order);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }
