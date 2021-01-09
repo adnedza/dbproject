@@ -4,10 +4,16 @@ Autorzy: Adrian Nędza, Igor Dzierwa, Konrad Makuch
 Komenda potrzebna do uruchomienia kontenerów (należy ją wpisać w root folderze projektu):
 "docker-compose up -d --build" - uruchamia kontenery w tle, buduje je zawsze przed uruchomieniem (zalecane przy zmianach w kodzie backendu, można pominąć '--build' jeśli zmian w kodzie nie było)
 
-# Budowanie obrazu northwind-service: 
-mvn clean package -DskipTests (spotify maven plugin)
+# Budowanie kontenerów:
+`docker-compose up -d` w głównym folderze - instalacja zależności frontu może trwać nawet 10 minut!
 
-# Swagger3: 
+# Usunięcie kontenerów:
+`docker-compose down` w głównym folderze
+
+# Adres frontu:
+https://localhost:9000
+
+# Swagger3:
 localhost:8080/swagger-ui/index.html
 
 # Project Lombok:
@@ -38,7 +44,7 @@ CustomerCustomerDemo – przyporządkowanie klientów do grup.
 ### Categories:
 
 Tabela SQL:\
-![Screenshot](images/category_table.png) 
+![Screenshot](images/category_table.png)
 
 Dokument NoSQL:
 ```
@@ -54,7 +60,7 @@ Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
 ### Products:
 
 Tabela SQL:\
-![Screenshot](images/products_table.png) 
+![Screenshot](images/products_table.png)
 
 Dokument NoSQL:
 
@@ -102,7 +108,7 @@ Dokument NoSQL:
   "postalCode": "string",
   "region": "string"
 }
-``` 
+```
 Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
 
 ### Region:
@@ -116,7 +122,7 @@ Dokumet NoSQL:
   "id": "string",
   "regionDescription": "string"
 }
-``` 
+```
 Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
 
 
@@ -135,7 +141,7 @@ Dokument NoSQL:
   },
   "territoryDescription": "string"
 }
-``` 
+```
 W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - dane z obiektu Region, w całości są przekazywane do dokumentu Territories.
 
 Jeśli chodzi o kwestię dodawania obiektu Region, to preferowaną przez nas opcją jest przekazanie samego parametru: regionDescription, po których możemy odszukać dany region.
@@ -159,7 +165,7 @@ Dokument NoSQL:
       "territoryDescription": "string"
     }
   }
-``` 
+```
 W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty Territory są przekazywane w całości do dokumentu EmployeeTerritories.
 
 Jeśli chodzi o kwestię dodawania obiektu EmployeeTerritories do obiektu Employee, preferowaną przez nas opcją jest przekazanie samych parametrów:
@@ -206,7 +212,7 @@ Dokument NoSQL:
   "title": "string",
   "titleOfCourtesy": "string"
 }
-``` 
+```
 W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty EmployeeTerritories są przekazywane w całości, w postaci listy, do dokumentu Employee.
 
 
@@ -221,7 +227,7 @@ Dokument NoSQL:
   "customerDesc": "string",
   "id": "string"
 }
-``` 
+```
 Dokument bazy NoSQL wygląda praktycznie tak samo jak tabela w bazie SQL.
 
 
@@ -239,7 +245,7 @@ Dokument NoSQL:
     },
     "id": "string"
  }
-``` 
+```
 W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty CustomerDemographic w całości są przekazywane do dokumentu CustomerCustomerDemo.
 
 Jeśli chodzi o kwestię dodawania obiektu CustomerCustomerDemo do obiektu Customer, to preferowaną przez nas opcją jest przekazanie samych parametrów: customerID/customerDesc, po których możemy odszukać danego klienta/grupę klientów.
@@ -272,7 +278,7 @@ Dokument NoSQL:
   "postalCode": "string",
   "region": "string"
 }
-``` 
+```
 W tym przypadku należało przełożyć relacje SQL na bazę NoSQL, co uzyskaliśmy poprzez zagnieżdżenie dokumentów - obiekty customerCustomerDemo są przekazywane w całości, w postaci listy, do dokumentu Customers.
 
 
