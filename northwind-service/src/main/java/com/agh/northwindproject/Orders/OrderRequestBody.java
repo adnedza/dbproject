@@ -31,6 +31,8 @@ public class OrderRequestBody {
 
     private String shipName;
 
+    private String shipAddress;
+
     private String shipCity;
 
     private String shipRegion;

@@ -35,6 +35,8 @@ public class Order {
 
     private String shipName;
 
+    private String shipAddress;
+
     private String shipCity;
 
     private String shipRegion;
@@ -51,6 +53,7 @@ public class Order {
         this.shippedDate = orderRequestBody.getShippedDate();
         this.freight = orderRequestBody.getFreight();
         this.shipName = orderRequestBody.getShipName();
+        this.shipAddress = orderRequestBody.getShipAddress();
         this.shipCity = orderRequestBody.getShipCity();
         this.shipRegion = orderRequestBody.getShipRegion();
         this.shipPostalCode = orderRequestBody.getShipPostalCode();
