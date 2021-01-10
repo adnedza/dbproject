@@ -13,9 +13,13 @@ import java.util.List;
 public class CustomerRequestBody {
     private String companyName;
 
+    private String contactName;
+
     private String contactTitle;
 
     private String address;
+
+    private String city;
 
     private String Region;
 

@@ -21,9 +21,13 @@ public class Customer {
 
     private String companyName;
 
+    private String contactName;
+
     private String contactTitle;
 
     private String address;
+
+    private String city;
 
     private String region;
 
@@ -39,8 +43,10 @@ public class Customer {
 
     public Customer(CustomerRequestBody customerRequestBody) {
         this.companyName = customerRequestBody.getCompanyName();
+        this.contactName = customerRequestBody.getContactName();
         this.contactTitle = customerRequestBody.getContactTitle();
         this.address = customerRequestBody.getAddress();
+        this.city = customerRequestBody.getCity();
         this.region = customerRequestBody.getRegion();
         this.postalCode = customerRequestBody.getPostalCode();
         this.country = customerRequestBody.getCountry();
