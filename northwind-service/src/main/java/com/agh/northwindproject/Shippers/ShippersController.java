@@ -1,6 +1,5 @@
 package com.agh.northwindproject.Shippers;
 
-import com.agh.northwindproject.Employees.Employee;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;

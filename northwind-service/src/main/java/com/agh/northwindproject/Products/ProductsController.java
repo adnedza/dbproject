@@ -32,10 +32,25 @@ public class ProductsController {
     @ResponseBody
     public ResponseEntity<String> addNewProduct(@RequestBody ProductsRequestBody productsRequestBody){
         Product product = new Product(productsRequestBody);
-        product.setCategory(categoriesRepository.findById(productsRequestBody.getCategoryID()).get());
-        product.setSupplierID(suppliersRepository.findById(productsRequestBody.getSupplierID()).get().getId());
+        product.setCategory(categoriesRepository.findByCategoryName(productsRequestBody.getCategoryName()));
+        product.setSupplierID(suppliersRepository.findByCompanyName(productsRequestBody.getSupplierName()).getId());
         productsRespository.save(product);
         return ResponseEntity.ok("\"status\": \"added\"");
+    }
+
+    @PutMapping(value = "/api/product/{productID}")
+    @ResponseBody
+    public ResponseEntity<String> updateProduct(@PathVariable String productID,
+                                                @RequestBody ProductsRequestBody productsRequestBody) {
+        if(productsRespository.findById(productID).get() != null) {
+            Product product = new Product(productsRequestBody);
+            product.setId(productID);
+            product.setCategory(categoriesRepository.findByCategoryName(productsRequestBody.getCategoryName()));
+            product.setSupplierID(suppliersRepository.findByCompanyName(productsRequestBody.getSupplierName()).getId());
+            productsRespository.save(product);
+            return ResponseEntity.ok("\"status\": \"updated\"");
+        }
+        return ResponseEntity.ok("\"status\": \"product does not exsist\"");
     }
 
     @GetMapping(value = "/api/product/{productName}")

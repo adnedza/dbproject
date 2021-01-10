@@ -1,19 +1,17 @@
 package com.agh.northwindproject.Orders;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter @Setter
+@NoArgsConstructor
+@JsonPropertyOrder
 public class OrderDetailsRequestBody {
     private String productName;
-    private int unitPrice;
-    private int quantity;
-    private double discount;
 
-    public OrderDetailsRequestBody(String productName, int unitPrice, int quantity, double discount) {
-        this.productName = productName;
-        this.unitPrice = unitPrice;
-        this.quantity = quantity;
-        this.discount = discount;
-    }
+    private int quantity;
+
+    private double discount;
 }

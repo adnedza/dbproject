@@ -26,6 +26,19 @@ public class CategoriesController {
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
+    @PutMapping(value = "/api/category/{categoryID}")
+    @ResponseBody
+    public ResponseEntity<String> updateCategory(@PathVariable String categoryID,
+                                                 @RequestBody CategoryRequestBody categoryRequestBody) {
+        if(categoriesRepository.findById(categoryID) != null) {
+            Category category = new Category(categoryRequestBody);
+            category.setId(categoryID);
+            categoriesRepository.save(category);
+            return ResponseEntity.ok("\"status\": \"updated\"");
+        }
+        return ResponseEntity.ok("\"status\": \"category not existing\"");
+    }
+
     @GetMapping(value = "/api/category/{categoryName}")
     @ResponseBody
     public ResponseEntity<Category> getCategoryByCategoryName(@PathVariable String categoryName){

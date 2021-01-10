@@ -1,11 +1,11 @@
 package com.agh.northwindproject.Customers;
 
-import com.agh.northwindproject.CustomerCustomerDemo.CustomerCustomerDemo;
+import com.agh.northwindproject.CustomerDemographics.CustomerDemographic;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import java.util.List;
 @Document(collection = "customers")
 @NoArgsConstructor
 @Getter @Setter
+@JsonPropertyOrder
 public class Customer {
     @Id
     private String id;
@@ -34,8 +35,7 @@ public class Customer {
 
     private String fax;
 
-    @DBRef
-    private List<CustomerCustomerDemo> customerCustomerDemo = new ArrayList<>();
+    private List<CustomerDemographic> customerDemographics = new ArrayList<>();
 
     public Customer(CustomerRequestBody customerRequestBody) {
         this.companyName = customerRequestBody.getCompanyName();

@@ -59,24 +59,35 @@ public class OrderController {
         order.setOrderDate( Calendar.getInstance().getTime());
 
         for(OrderDetailsRequestBody orderDetailsRequestBody : orderRequestBody.getOrderDetails()) {
-            if(productsRespository.findByProductName(orderDetailsRequestBody.getProductName()).getUnitsInStock()
-                    - orderDetailsRequestBody.getQuantity() >= 0) {
-                Product product = productsRespository.findByProductName(orderDetailsRequestBody.getProductName());
-                OrderDetails orderDetails = new OrderDetails(product, orderDetailsRequestBody);
-                order.getOrderDetailNews().add(orderDetails);
-                product.setUnitsInOrder(product.getUnitsInOrder() + orderDetailsRequestBody.getQuantity());
-                product.setUnitsInStock(product.getUnitsInStock() - orderDetailsRequestBody.getQuantity());
-                productsRespository.save(product);
+            Product product = productsRespository.findByProductName(orderDetailsRequestBody.getProductName());
+            if(product != null && product.isDiscontinued() == false) {
+                if(product.getQuantityPerUnit() >= orderDetailsRequestBody.getQuantity()) {
+                    if(product.getUnitsInStock() - orderDetailsRequestBody.getQuantity() >= 0) {
+                        OrderDetails orderDetails = new OrderDetails(product.getProductName(), orderDetailsRequestBody);
+                        orderDetails.setUnitPrice(product.getUnitPrice() - orderDetails.getDiscount());
+                        order.getOrderDetails().add(orderDetails);
+                        product.setUnitsInOrder(product.getUnitsInOrder() + orderDetailsRequestBody.getQuantity());
+                        product.setUnitsInStock(product.getUnitsInStock() - orderDetailsRequestBody.getQuantity());
+                        productsRespository.save(product);
+                    } else {
+                        return ResponseEntity.ok("\"status\": \"not enough units in stock\": " + product.getProductName());
+                    }
+                } else {
+                    return ResponseEntity.ok("\"status\": \"invalid quantityPerUnit\": " + product.getProductName());
+                }
+            } else {
+                return ResponseEntity.ok("\"status\": \"product does not exists\": " + product.getProductName());
             }
         }
-
         ordersRepository.save(order);
         return ResponseEntity.ok("\"status\": \"added\"");
     }
 
     @GetMapping(value = "/api/order/{customerCompanyName}/{employeeLastName}/{employeeFirstName}")
     @ResponseBody
-    public ResponseEntity<List<Order>> getOrdersByCustomerAndEmployee(@PathVariable String customerCompanyName, @PathVariable String employeeLastName, @PathVariable String employeeFirstName){
+    public ResponseEntity<List<Order>> getOrdersByCustomerAndEmployee(@PathVariable String customerCompanyName,
+                                                                      @PathVariable String employeeLastName,
+                                                                      @PathVariable String employeeFirstName){
         return ResponseEntity.ok(ordersRepository.findByCustomerIDAndEmployeeID(
                 customersRepository.findByCompanyName(customerCompanyName).getId(),
                 employeesRepository.findByLastNameAndFirstName(employeeLastName, employeeFirstName).getId()

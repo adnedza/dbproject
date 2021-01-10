@@ -32,6 +32,19 @@ public class SuppliersController {
         return ResponseEntity.ok(suppliersRepository.findByCompanyName(companyName));
     }
 
+    @PutMapping(value = "/api/supplier/{supplierID}")
+    @ResponseBody
+    public ResponseEntity<String> updateSupplier(@PathVariable String supplierID,
+                                                 @RequestBody SupplierRequestBody supplierRequestBody) {
+        if(suppliersRepository.findById(supplierID) != null) {
+            Supplier supplier = new Supplier(supplierRequestBody);
+            supplier.setId(supplierID);
+            suppliersRepository.save(supplier);
+            return ResponseEntity.ok("\"status\": \"updated\"");
+        }
+        return ResponseEntity.ok("\"status\": \"supplier not existing\"");
+    }
+
     @DeleteMapping(value = "/api/supplier/{supplierID}")
     @ResponseBody
     public ResponseEntity<String> deleteSupplier(@PathVariable String supplierID){

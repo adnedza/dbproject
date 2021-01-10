@@ -1,10 +1,10 @@
 package com.agh.northwindproject.Orders;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -14,6 +14,7 @@ import java.util.List;
 @Document(collection = "orders")
 @NoArgsConstructor
 @Getter @Setter
+@JsonPropertyOrder
 public class Order {
     @Id
     private String id;
@@ -42,25 +43,7 @@ public class Order {
 
     private String shipCountry;
 
-    private List<OrderDetails> orderDetailNews = new ArrayList<>();
-
-    public Order(String customerID, String employeeID, String shipperID, Date orderDate,
-                 Date requiredDate, Date shippedDate,
-                 String freight, String shipName, String shipCity, String shipRegion,
-                 String shipPostalCode, String shipCountry) {
-        this.customerID = customerID;
-        this.employeeID = employeeID;
-        this.shipperID = shipperID;
-        this.orderDate = orderDate;
-        this.requiredDate = requiredDate;
-        this.shippedDate = shippedDate;
-        this.freight = freight;
-        this.shipName = shipName;
-        this.shipCity = shipCity;
-        this.shipRegion = shipRegion;
-        this.shipPostalCode = shipPostalCode;
-        this.shipCountry = shipCountry;
-    }
+    private List<OrderDetails> orderDetails = new ArrayList<>();
 
     public Order(OrderRequestBody orderRequestBody) {
         this.orderDate = orderRequestBody.getOrderDate();
