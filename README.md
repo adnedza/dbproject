@@ -212,11 +212,11 @@ Dokument Customer:
   "fax": "string",
   "customerCustomerDemo": [
     {
-      "customerDemographic": {
-        "customerDesc": "string",
-        "id": "string"
-      },
       "id": "string"
+      "customerDemographic": {
+        "id": "string"
+        "customerDesc": "string",
+      },
     }
   ],
 }
