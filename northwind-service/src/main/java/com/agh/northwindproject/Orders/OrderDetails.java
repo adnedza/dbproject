@@ -1,6 +1,5 @@
 package com.agh.northwindproject.Orders;
 
-import com.agh.northwindproject.Products.Product;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

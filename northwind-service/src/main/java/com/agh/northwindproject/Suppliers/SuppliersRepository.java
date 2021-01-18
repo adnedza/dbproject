@@ -9,3 +9,4 @@ public interface SuppliersRepository extends MongoRepository<Supplier, String> {
     List<Supplier> findAll();
     Supplier findByCompanyName(String companyName);
 }
+

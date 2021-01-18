@@ -1,5 +1,6 @@
 package com.agh.northwindproject.Territories;
 
+import com.agh.northwindproject.Region.Region;
 import com.agh.northwindproject.Region.RegionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -26,9 +27,14 @@ public class TerritoriesController {
     @ResponseBody
     public ResponseEntity<String> addNewTerritory(@RequestBody TerritoriesRequestBody territoriesRequestBody) {
         Territory territory = new Territory(territoriesRequestBody);
-        territory.setRegion(regionsRepository.findById(territoriesRequestBody.getRegionID()).get());
-        territoriesRepository.save(territory);
-        return ResponseEntity.ok("\"status\": \"added\"");
+        Region region = regionsRepository.findById(territoriesRequestBody.getRegionID()).orElse(null);
+        if (region != null) {
+            territory.setRegion(region);
+            territoriesRepository.save(territory);
+            return ResponseEntity.ok("\"status\": \"added\"");
+        } else {
+            return ResponseEntity.ok("\"status\": \"region does not exists\"");
+        }
     }
 
     @GetMapping(value = "/api/territory/{territoryDescription}")
@@ -45,6 +51,6 @@ public class TerritoriesController {
             territoriesRepository.delete(territory);
             return ResponseEntity.ok("\"status\": \"removed\"");
         }
-        return ResponseEntity.ok("\"status\": \"territory not existing\"");
+        return ResponseEntity.ok("\"status\": \"territory does not exists\"");
     }
 }

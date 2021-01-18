@@ -1,17 +1,18 @@
 package com.agh.northwindproject.Orders;
 
+import com.agh.northwindproject.Customers.Customer;
 import com.agh.northwindproject.Customers.CustomersRepository;
+import com.agh.northwindproject.Employees.Employee;
 import com.agh.northwindproject.Employees.EmployeesRepository;
 import com.agh.northwindproject.Products.Product;
 import com.agh.northwindproject.Products.ProductsRepository;
+import com.agh.northwindproject.Shippers.Shipper;
 import com.agh.northwindproject.Shippers.ShippersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @CrossOrigin
@@ -41,21 +42,31 @@ public class OrderController {
     @GetMapping(value = "/api/order/{orderId}")
     @ResponseBody
     public ResponseEntity<Order> getOrder(@PathVariable String orderId){
-        Optional<Order> order = ordersRepository.findById(orderId);
-        if(order.isPresent())
-            return ResponseEntity.ok(order.get());
-        return null;
+        Order order = ordersRepository.findById(orderId).orElse(null);
+        return ResponseEntity.ok(order);
     }
 
     @PostMapping(value = "/api/order")
     @ResponseBody
     public ResponseEntity<String> addNewOrder(@RequestBody OrderRequestBody orderRequestBody){
-        Order order = new Order(orderRequestBody);
+        Customer customer = customersRepository.findByCompanyName(orderRequestBody.getCustomerCompanyName());
+        if (customer == null) {
+            return ResponseEntity.ok("\"status\": \"customer does not exists\"");
+        }
+        Employee employee = employeesRepository.findByLastNameAndFirstName(orderRequestBody.getEmployeeLastName(),
+                orderRequestBody.getEmployeeFirstName());
+        if (employee == null) {
+            return ResponseEntity.ok("\"status\": \"employee does not exists\"");
+        }
+        Shipper shipper = shippersRepository.findByCompanyName(orderRequestBody.getShipperCompanyName());
+        if (shipper == null) {
+            return ResponseEntity.ok("\"status\": \"shipper does not exists\"");
+        }
 
-        order.setCustomerID(customersRepository.findByCompanyName(orderRequestBody.getCustomerCompanyName()).getId());
-        order.setEmployeeID(employeesRepository.findByLastNameAndFirstName(orderRequestBody.getEmployeeLastName(),
-                orderRequestBody.getEmployeeFirstName()).getId());
-        order.setShipperID(shippersRepository.findByCompanyName(orderRequestBody.getShipperCompanyName()).getId());
+        Order order = new Order(orderRequestBody);
+        order.setCustomerID(customer.getId());
+        order.setEmployeeID(employee.getId());
+        order.setShipperID(shipper.getId());
         order.setOrderDate( Calendar.getInstance().getTime());
 
         for(OrderDetailsRequestBody orderDetailsRequestBody : orderRequestBody.getOrderDetails()) {
@@ -88,10 +99,12 @@ public class OrderController {
     public ResponseEntity<List<Order>> getOrdersByCustomerAndEmployee(@PathVariable String customerCompanyName,
                                                                       @PathVariable String employeeLastName,
                                                                       @PathVariable String employeeFirstName){
-        return ResponseEntity.ok(ordersRepository.findByCustomerIDAndEmployeeID(
-                customersRepository.findByCompanyName(customerCompanyName).getId(),
-                employeesRepository.findByLastNameAndFirstName(employeeLastName, employeeFirstName).getId()
-        ));
+        Customer customer = customersRepository.findByCompanyName(customerCompanyName);
+        Employee employee = employeesRepository.findByLastNameAndFirstName(employeeLastName, employeeFirstName);
+        if (customer != null && employee != null) {
+            return ResponseEntity.ok(ordersRepository.findByCustomerIDAndEmployeeID(customer.getId(), employee.getId()));
+        }
+        return null;
     }
 
     @DeleteMapping(value = "/api/order/{orderID}")
