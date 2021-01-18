@@ -43,7 +43,7 @@ public class ShippersController {
     @DeleteMapping(value = "/api/shipper/{shipperID}")
     @ResponseBody
     public ResponseEntity<String> deleteShipper(@PathVariable String shipperID){
-        Shipper shipper = shippersRepository.findById(shipperID).get();
+        Shipper shipper = shippersRepository.findById(shipperID).orElse(null);
         if(shipper != null){
             shippersRepository.delete(shipper);
             return ResponseEntity.ok("\"status\": \"removed\"");

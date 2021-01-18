@@ -52,7 +52,7 @@ public class CustomersController {
     @DeleteMapping(value = "/api/customer/{customerID}")
     @ResponseBody
     public ResponseEntity<String> deleteCustomer(@PathVariable String customerID){
-        Customer customer = customersRepository.findById(customerID).get();
+        Customer customer = customersRepository.findById(customerID).orElse(null);
         if(customer != null){
             customersRepository.delete(customer);
             return ResponseEntity.ok("\"status\": \"removed\"");

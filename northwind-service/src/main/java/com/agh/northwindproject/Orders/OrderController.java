@@ -3,7 +3,7 @@ package com.agh.northwindproject.Orders;
 import com.agh.northwindproject.Customers.CustomersRepository;
 import com.agh.northwindproject.Employees.EmployeesRepository;
 import com.agh.northwindproject.Products.Product;
-import com.agh.northwindproject.Products.ProductsRespository;
+import com.agh.northwindproject.Products.ProductsRepository;
 import com.agh.northwindproject.Shippers.ShippersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +30,7 @@ public class OrderController {
     private ShippersRepository shippersRepository;
 
     @Autowired
-    private ProductsRespository productsRespository;
+    private ProductsRepository productsRepository;
 
     @GetMapping(value = "/api/orders")
     @ResponseBody
@@ -59,7 +59,7 @@ public class OrderController {
         order.setOrderDate( Calendar.getInstance().getTime());
 
         for(OrderDetailsRequestBody orderDetailsRequestBody : orderRequestBody.getOrderDetails()) {
-            Product product = productsRespository.findByProductName(orderDetailsRequestBody.getProductName());
+            Product product = productsRepository.findByProductName(orderDetailsRequestBody.getProductName());
             if(product != null && product.isDiscontinued() == false) {
                 if(product.getQuantityPerUnit() >= orderDetailsRequestBody.getQuantity()) {
                     if(product.getUnitsInStock() - orderDetailsRequestBody.getQuantity() >= 0) {
@@ -68,7 +68,7 @@ public class OrderController {
                         order.getOrderDetails().add(orderDetails);
                         product.setUnitsInOrder(product.getUnitsInOrder() + orderDetailsRequestBody.getQuantity());
                         product.setUnitsInStock(product.getUnitsInStock() - orderDetailsRequestBody.getQuantity());
-                        productsRespository.save(product);
+                        productsRepository.save(product);
                     } else {
                         return ResponseEntity.ok("\"status\": \"not enough units in stock\": " + product.getProductName());
                     }
@@ -97,7 +97,7 @@ public class OrderController {
     @DeleteMapping(value = "/api/order/{orderID}")
     @ResponseBody
     public ResponseEntity<String> deleteOrder(@PathVariable String orderID){
-        Order order = ordersRepository.findById(orderID).get();
+        Order order = ordersRepository.findById(orderID).orElse(null);
         if(order != null){
             ordersRepository.delete(order);
             return ResponseEntity.ok("\"status\": \"removed\"");

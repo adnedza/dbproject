@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.ArrayList;
@@ -39,6 +40,7 @@ public class Customer {
 
     private String fax;
 
+    @DBRef
     private List<CustomerDemographic> customerDemographics = new ArrayList<>();
 
     public Customer(CustomerRequestBody customerRequestBody) {

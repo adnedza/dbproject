@@ -57,7 +57,7 @@ public class EmployeesController {
     @DeleteMapping(value = "/api/employee/{employeeID}")
     @ResponseBody
     public ResponseEntity<String> deleteEmployee(@PathVariable String employeeID){
-        Employee employee = employeesRepository.findById(employeeID).get();
+        Employee employee = employeesRepository.findById(employeeID).orElse(null);
         if(employee != null){
             employeesRepository.delete(employee);
             return ResponseEntity.ok("\"status\": \"removed\"");

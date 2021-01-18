@@ -34,7 +34,7 @@ public class RegionsController {
     @DeleteMapping(value = "/api/region/{regionID}")
     @ResponseBody
     public ResponseEntity<String> deleteRegion(@PathVariable String regionID){
-        Region region = regionsRepository.findById(regionID).get();
+        Region region = regionsRepository.findById(regionID).orElse(null);
         if(region != null){
             regionsRepository.delete(region);
             return ResponseEntity.ok("\"status\": \"removed\"");

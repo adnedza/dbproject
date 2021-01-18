@@ -40,7 +40,7 @@ public class TerritoriesController {
     @DeleteMapping(value = "/api/territory/{territoryID}")
     @ResponseBody
     public ResponseEntity<String> deleteTerritory(@PathVariable String territoryID){
-        Territory territory = territoriesRepository.findById(territoryID).get();
+        Territory territory = territoriesRepository.findById(territoryID).orElse(null);
         if(territory != null){
             territoriesRepository.delete(territory);
             return ResponseEntity.ok("\"status\": \"removed\"");
