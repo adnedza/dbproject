@@ -14,7 +14,7 @@
               <span>Produkty w zamówieniu</span>
             </div>
             <div v-for="o in tableData.orderDetails" class="text item">
-              {{'Produkt: ' + o.fullData.productName + ', ilość: ' + o.quantity }}
+              {{'Produkt: ' + o.productName + ', ilość: ' + o.quantity }}
 
 
             </div>
@@ -41,7 +41,6 @@
                     this.tableData = resp.data;
                     console.log(this.tableData)
 
-                    this.loadProds(this.tableData.orderDetails);
                     this.loadCustomer(this.tableData.customerID);
                     this.loadEmployee(this.tableData.employeeID);
                     this.loadShipper(this.tableData.shipperID);
@@ -55,20 +54,6 @@
                 }).catch(resp => {
                     console.log("error", resp);
                 })
-            },
-            loadProds(prods){
-              for (let i = 0; i < prods.length; i++) {
-                 this.$axios.get(this.$api + "/api/product/id/" +prods[i].productID, {})
-                    .then(resp => {
-                      console.log(resp);
-                      prods[i].fullData = resp.data
-                      this.counter++;
-                    }).catch(resp => {
-                  console.log("error", resp);
-                })
-
-              }
-
             },
           loadShipper(id){
             this.$axios.get(this.$api + "/api/shipper/id/" +id, {})

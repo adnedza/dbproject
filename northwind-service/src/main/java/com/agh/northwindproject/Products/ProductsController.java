@@ -5,6 +5,7 @@ import com.agh.northwindproject.Categories.Category;
 import com.agh.northwindproject.Suppliers.Supplier;
 import com.agh.northwindproject.Suppliers.SuppliersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -40,11 +41,11 @@ public class ProductsController {
             productsRepository.save(product);
             return ResponseEntity.ok("\"status\": \"added\"");
         } else if (category == null && supplier != null) {
-            return ResponseEntity.ok("\"status\": \"category does not exists\"");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"category does not exists\"");
         } else if (category != null && supplier == null) {
-            return ResponseEntity.ok("\"status\": \"supplier does not exists\"");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"supplier does not exists\"");
         }
-        return ResponseEntity.ok("\"status\": \"supplier and category does not exists\"");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"supplier and category does not exists\"");
     }
 
     @PutMapping(value = "/api/product/{productID}")
@@ -62,11 +63,11 @@ public class ProductsController {
                 productsRepository.save(product);
                 return ResponseEntity.ok("\"status\": \"updated\"");
             } else if (category == null && supplier != null) {
-                return ResponseEntity.ok("\"status\": \"category does not exsist\"");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"category does not exsist\"");
             } else if (category != null && supplier == null) {
-                return ResponseEntity.ok("\"status\": \"supplier does not exsist\"");
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"supplier does not exsist\"");
             }
-            return ResponseEntity.ok("\"status\": \"supplier and category does not exsist\"");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"supplier and category does not exsist\"");
         }
         return ResponseEntity.ok("\"status\": \"product does not exists\"");
     }

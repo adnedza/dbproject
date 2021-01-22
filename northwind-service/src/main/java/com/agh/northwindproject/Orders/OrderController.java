@@ -9,6 +9,7 @@ import com.agh.northwindproject.Products.ProductsRepository;
 import com.agh.northwindproject.Shippers.Shipper;
 import com.agh.northwindproject.Shippers.ShippersRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Calendar;
@@ -68,12 +69,16 @@ public class OrderController {
         order.setEmployeeID(employee.getId());
         order.setShipperID(shipper.getId());
         order.setOrderDate( Calendar.getInstance().getTime());
-
+        System.out.println("dsadsasdasadasd");
+        //System.console().writer().println("Dsaasdadsdsadasasd");
         for(OrderDetailsRequestBody orderDetailsRequestBody : orderRequestBody.getOrderDetails()) {
             Product product = productsRepository.findByProductName(orderDetailsRequestBody.getProductName());
             if(product != null && product.isDiscontinued() == false) {
-                if(product.getQuantityPerUnit() >= orderDetailsRequestBody.getQuantity()) {
+                if(product.getUnitsInStock() >= orderDetailsRequestBody.getQuantity()) {
+
+
                     if(product.getUnitsInStock() - orderDetailsRequestBody.getQuantity() >= 0) {
+
                         OrderDetails orderDetails = new OrderDetails(product.getProductName(), orderDetailsRequestBody);
                         orderDetails.setUnitPrice(product.getUnitPrice() - orderDetails.getDiscount());
                         order.getOrderDetails().add(orderDetails);
@@ -81,13 +86,14 @@ public class OrderController {
                         product.setUnitsInStock(product.getUnitsInStock() - orderDetailsRequestBody.getQuantity());
                         productsRepository.save(product);
                     } else {
-                        return ResponseEntity.ok("\"status\": \"not enough units in stock\": " + product.getProductName());
+                        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"not enough units in stock\": " + product.getProductName());
                     }
                 } else {
-                    return ResponseEntity.ok("\"status\": \"invalid quantityPerUnit\": " + product.getProductName());
+                    System.out.println(product.getQuantityPerUnit() + "dasadsads" + orderDetailsRequestBody.getQuantity());
+                    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"invalid quantityPerUnit\": " + product.getProductName());
                 }
             } else {
-                return ResponseEntity.ok("\"status\": \"product does not exists\": " + product.getProductName());
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"product does not exists\": " + product.getProductName());
             }
         }
         ordersRepository.save(order);

@@ -18,23 +18,23 @@
                 <el-input type="textarea" v-model="model.description"></el-input>
             </el-form-item>
             <el-form-item label="Kategoria produktu:" prop="categoryID">
-                <el-select v-loading="categorySelectLoading" v-model="model.categoryID" placeholder="Zacznij wpisywać nazwę kategorii" :no-match-text="'Brak wyników'" filterable>
+                <el-select v-loading="categorySelectLoading" v-model="model.categoryName" placeholder="Zacznij wpisywać nazwę kategorii" :no-match-text="'Brak wyników'" filterable>
                     <el-option
                             v-for="item in categories"
                             :key="item.category"
                             :label="item.categoryName"
-                            :value="item.id">
+                            :value="item.categoryName">
                     </el-option>
                 </el-select>
             </el-form-item>
 
           <el-form-item label="Supplier:" prop="supplierID">
-            <el-select v-loading="categorySelectLoading" v-model="model.supplierID" placeholder="Zacznij wpisywać supplier" :no-match-text="'Brak wyników'" filterable>
+            <el-select v-loading="categorySelectLoading" v-model="model.supplierName" placeholder="Zacznij wpisywać supplier" :no-match-text="'Brak wyników'" filterable>
               <el-option
                   v-for="item in suppliers"
                   :key="item.id"
                   :label="item.companyName"
-                  :value="item.id">
+                  :value="item.companyName">
               </el-option>
             </el-select>
           </el-form-item>
@@ -74,8 +74,8 @@ export default {
               unitsInStock:"",
                 stockCount: "",
                 description: "",
-                categoryID: "",
-              supplierID: "",
+                categoryName: "",
+              supplierName: "",
                 imageUrl: "",
                 filename: "",
                 picture_name: "",
@@ -94,10 +94,10 @@ export default {
                 author: [
                     { required: true,  message: "Pole wymagane", trigger: 'change' }
                 ],
-              categoryID: [
+              categoryName: [
                     { required: true,  message: "Pole wymagane", trigger: 'change' }
                 ],
-              supplierID: [
+              supplierName: [
                 { required: true,  message: "Pole wymagane", trigger: 'change' }
               ],
                 description: [
