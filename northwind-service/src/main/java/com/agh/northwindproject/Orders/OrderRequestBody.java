@@ -1,6 +1,6 @@
 package com.agh.northwindproject.Orders;
 
-import com.agh.northwindproject.OrderDetails.OrderDetailsRequestBody;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,6 +11,7 @@ import java.util.List;
 
 @NoArgsConstructor
 @Getter @Setter
+@JsonPropertyOrder
 public class OrderRequestBody {
     private String customerCompanyName;
 
@@ -29,6 +30,8 @@ public class OrderRequestBody {
     private String freight;
 
     private String shipName;
+
+    private String shipAddress;
 
     private String shipCity;
 

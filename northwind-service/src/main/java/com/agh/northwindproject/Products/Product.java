@@ -1,16 +1,18 @@
 package com.agh.northwindproject.Products;
 
 import com.agh.northwindproject.Categories.Category;
-import com.agh.northwindproject.Suppliers.Supplier;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Document(collection = "products")
 @NoArgsConstructor
 @Getter @Setter
+@JsonPropertyOrder
 public class Product {
     @Id
     private String id;
@@ -19,6 +21,7 @@ public class Product {
 
     private String supplierID;
 
+    @DBRef
     private Category category;
 
     private int quantityPerUnit;

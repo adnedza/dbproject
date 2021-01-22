@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 public class CustomerDemographicsController {
    @Autowired
    private CustomerDemographicsRepository customerDemographicsRepository;
@@ -32,7 +33,8 @@ public class CustomerDemographicsController {
     @DeleteMapping(value = "/api/customerDemographic/{customerDemographicID}")
     @ResponseBody
     public ResponseEntity<String> deleteCustomerDemographic(@PathVariable String customerDemographicID){
-        CustomerDemographic customerDemographic = customerDemographicsRepository.findById(customerDemographicID).get();
+        CustomerDemographic customerDemographic = customerDemographicsRepository.
+                findById(customerDemographicID).orElse(null);
         if(customerDemographic != null){
             customerDemographicsRepository.delete(customerDemographic);
             return ResponseEntity.ok("\"status\": \"removed\"");

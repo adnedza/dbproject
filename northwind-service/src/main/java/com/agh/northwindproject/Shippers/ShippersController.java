@@ -1,12 +1,10 @@
 package com.agh.northwindproject.Shippers;
 
-import com.agh.northwindproject.Employees.Employee;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -44,7 +42,7 @@ public class ShippersController {
     @DeleteMapping(value = "/api/shipper/{shipperID}")
     @ResponseBody
     public ResponseEntity<String> deleteShipper(@PathVariable String shipperID){
-        Shipper shipper = shippersRepository.findById(shipperID).get();
+        Shipper shipper = shippersRepository.findById(shipperID).orElse(null);
         if(shipper != null){
             shippersRepository.delete(shipper);
             return ResponseEntity.ok("\"status\": \"removed\"");

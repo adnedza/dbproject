@@ -1,7 +1,7 @@
 package com.agh.northwindproject.Employees;
 
-import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritory;
-import com.agh.northwindproject.Region.Region;
+import com.agh.northwindproject.Territories.Territory;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -15,6 +15,7 @@ import java.util.List;
 @Document(collection = "employees")
 @NoArgsConstructor
 @Getter @Setter
+@JsonPropertyOrder
 public class Employee {
     @Id
     private String id;
@@ -54,7 +55,7 @@ public class Employee {
     private String photoPath;
 
     @DBRef
-    private List<EmployeeTerritory> employeeTerritories = new ArrayList<>();
+    private List<Territory> employeeTerritories = new ArrayList<>();
 
     public Employee(EmployeeRequestBody employeeRequestBody) {
         this.lastName = employeeRequestBody.getLastName();

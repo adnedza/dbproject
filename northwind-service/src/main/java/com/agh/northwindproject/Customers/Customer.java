@@ -1,6 +1,7 @@
 package com.agh.northwindproject.Customers;
 
-import com.agh.northwindproject.CustomerCustomerDemo.CustomerCustomerDemo;
+import com.agh.northwindproject.CustomerDemographics.CustomerDemographic;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,15 +15,20 @@ import java.util.List;
 @Document(collection = "customers")
 @NoArgsConstructor
 @Getter @Setter
+@JsonPropertyOrder
 public class Customer {
     @Id
     private String id;
 
     private String companyName;
 
+    private String contactName;
+
     private String contactTitle;
 
     private String address;
+
+    private String city;
 
     private String region;
 
@@ -35,12 +41,14 @@ public class Customer {
     private String fax;
 
     @DBRef
-    private List<CustomerCustomerDemo> customerCustomerDemo = new ArrayList<>();
+    private List<CustomerDemographic> customerDemographics = new ArrayList<>();
 
     public Customer(CustomerRequestBody customerRequestBody) {
         this.companyName = customerRequestBody.getCompanyName();
+        this.contactName = customerRequestBody.getContactName();
         this.contactTitle = customerRequestBody.getContactTitle();
         this.address = customerRequestBody.getAddress();
+        this.city = customerRequestBody.getCity();
         this.region = customerRequestBody.getRegion();
         this.postalCode = customerRequestBody.getPostalCode();
         this.country = customerRequestBody.getCountry();

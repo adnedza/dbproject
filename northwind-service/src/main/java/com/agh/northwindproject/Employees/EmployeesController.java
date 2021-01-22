@@ -1,10 +1,7 @@
 package com.agh.northwindproject.Employees;
 
-import com.agh.northwindproject.Customers.Customer;
-import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritoriesRepository;
-import com.agh.northwindproject.EmployeeTerritories.EmployeeTerritory;
-import com.agh.northwindproject.Region.RegionsRepository;
 import com.agh.northwindproject.Territories.TerritoriesRepository;
+import com.agh.northwindproject.Territories.Territory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,12 +18,6 @@ public class EmployeesController {
     @Autowired
     private TerritoriesRepository territoriesRepository;
 
-    @Autowired
-    private RegionsRepository regionsRepository;
-
-    @Autowired
-    private EmployeeTerritoriesRepository employeeTerritoriesRepository;
-
     @GetMapping(value = "/api/employees")
     @ResponseBody
     public ResponseEntity<List<Employee>> getAllEmployees(){
@@ -39,10 +30,10 @@ public class EmployeesController {
         Employee employee = new Employee(employeeRequestBody);
 
         for (String territoryDescription : employeeRequestBody.getEmployeeTerritories()) {
-            EmployeeTerritory employeeTerritory = new EmployeeTerritory(
-                    territoriesRepository.findByTerritoryDescription(territoryDescription));
-            employee.getEmployeeTerritories().add(employeeTerritory);
-            employeeTerritoriesRepository.save(employeeTerritory);
+            Territory territory = territoriesRepository.findByTerritoryDescription(territoryDescription);
+            if (territory != null) {
+                employee.getEmployeeTerritories().add(territory);
+            }
         }
         employeesRepository.save(employee);
 
@@ -66,7 +57,7 @@ public class EmployeesController {
     @DeleteMapping(value = "/api/employee/{employeeID}")
     @ResponseBody
     public ResponseEntity<String> deleteEmployee(@PathVariable String employeeID){
-        Employee employee = employeesRepository.findById(employeeID).get();
+        Employee employee = employeesRepository.findById(employeeID).orElse(null);
         if(employee != null){
             employeesRepository.delete(employee);
             return ResponseEntity.ok("\"status\": \"removed\"");

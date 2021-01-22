@@ -1,15 +1,15 @@
-package com.agh.northwindproject.OrderDetails;
+package com.agh.northwindproject.Orders;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@NoArgsConstructor
 @Getter @Setter
+@NoArgsConstructor
+@JsonPropertyOrder
 public class OrderDetailsRequestBody {
     private String productName;
-
-    private int unitPrice;
 
     private int quantity;
 

@@ -1,7 +1,6 @@
 package com.agh.northwindproject.Customers;
 
-import com.agh.northwindproject.CustomerCustomerDemo.CustomerCustomerDemo;
-import com.agh.northwindproject.CustomerCustomerDemo.CustomerCustomerDemoRepository;
+import com.agh.northwindproject.CustomerDemographics.CustomerDemographic;
 import com.agh.northwindproject.CustomerDemographics.CustomerDemographicsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,9 +17,6 @@ public class CustomersController {
     @Autowired
     private CustomerDemographicsRepository customerDemographicsRepository;
 
-    @Autowired
-    private CustomerCustomerDemoRepository customerCustomerDemoRepository;
-
     @GetMapping(value = "/api/customers")
     @ResponseBody
     public ResponseEntity<List<Customer>> getAllCustomers(){
@@ -32,10 +28,10 @@ public class CustomersController {
     public ResponseEntity<String> addNewCustomer(@RequestBody CustomerRequestBody customerRequestBody){
         Customer customer = new Customer(customerRequestBody);
         for (String customerDesc : customerRequestBody.getCustomerCustomerDemo()) {
-            CustomerCustomerDemo customerCustomerDemo = new CustomerCustomerDemo(
-                    customerDemographicsRepository.findByCustomerDesc(customerDesc));
-            customer.getCustomerCustomerDemo().add(customerCustomerDemo);
-            customerCustomerDemoRepository.save(customerCustomerDemo);
+            CustomerDemographic customerDemographic = customerDemographicsRepository.findByCustomerDesc(customerDesc);
+            if (customerDemographic != null ) {
+                customer.getCustomerDemographics().add(customerDemographic);
+            }
         }
         customersRepository.save(customer);
         return ResponseEntity.ok("\"status\": \"added\"");
@@ -56,7 +52,7 @@ public class CustomersController {
     @DeleteMapping(value = "/api/customer/{customerID}")
     @ResponseBody
     public ResponseEntity<String> deleteCustomer(@PathVariable String customerID){
-        Customer customer = customersRepository.findById(customerID).get();
+        Customer customer = customersRepository.findById(customerID).orElse(null);
         if(customer != null){
             customersRepository.delete(customer);
             return ResponseEntity.ok("\"status\": \"removed\"");

@@ -1,17 +1,19 @@
 package com.agh.northwindproject.Products;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @NoArgsConstructor
 @Getter @Setter
+@JsonPropertyOrder
 public class ProductsRequestBody {
     private String productName;
 
-    private String supplierID;
+    private String supplierName;
 
-    private String categoryID;
+    private String categoryName;
 
     private int quantityPerUnit;
 
