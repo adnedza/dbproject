@@ -16,8 +16,7 @@
         >
             <el-table-column prop="id" label="Identyfikator"></el-table-column>
             <el-table-column prop="orderDate" label="Data złożenia"></el-table-column>
-            <el-table-column prop="category.categoryName" label="Kategoria"></el-table-column>
-            <el-table-column prop="unitsInStock" label="stan magazynowy"></el-table-column>
+
             <el-table-column
                     fixed="right"
                     label="Akcje"

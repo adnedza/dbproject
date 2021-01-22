@@ -1,11 +1,11 @@
 <template>
 
-    <div id="AGHSSIE">
+    <div id="TEST">
 
 
     <el-row>
         <h2>
-            Zaloguj się, aby uzyskać dostęp do zawartości strony
+            Wybierz akcję z menu
         </h2>
     </el-row>
     </div>
