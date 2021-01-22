@@ -35,6 +35,9 @@ public class ProductsController {
         Product product = new Product(productsRequestBody);
         Category category = categoriesRepository.findByCategoryName(productsRequestBody.getCategoryName());
         Supplier supplier = suppliersRepository.findByCompanyName(productsRequestBody.getSupplierName());
+        if(productsRepository.findByProductName(productsRequestBody.getProductName()) != null){
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("\"status\": \"product with this name already exists\"");
+        }
         if (category != null && supplier != null) {
             product.setCategory(category);
             product.setSupplierID(supplier.getId());
